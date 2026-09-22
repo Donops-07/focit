@@ -1,0 +1,48 @@
+{
+  "about": {
+    "history": [
+      "The Faculty of Computing and Information Technology at Osun State University was established on December 14, 2023, as a standalone faculty within the College of Science, Engineering and Technology.",
+      "This milestone reflects the University's recognition of the critical role of computing and information technology in driving national development and global competitiveness.",
+      "The Faculty currently comprises seven academic departments: Computer Science, Cyber Security, Software Engineering, Information Systems, Information Technology, Data Science, and Library and Information Science. All programmes are fully accredited by the National Universities Commission (NUC), with curricula tailored to the Benchmark Minimum Academic Standards (BMAS/CCMAS)."
+    ],
+    "vision": "To become a global leader in IT education by providing high-quality teaching and learning experiences that produce entrepreneurial graduates capable of impacting positively on their environment while being globally competitive.",
+    "mission": "To create a unique institution committed to the pursuit of academic innovation, skill-based training, and a tradition of excellence in teaching, research, and community service.",
+    "leadership": {
+      "dean": {
+        "name": "Prof. S. O. Ogundokun",
+        "title": "Dean, Faculty of Computing & Information Technology",
+        "bio": "Professor S.O. Ogundokun brings over two decades of academic and industry experience to the Faculty. He holds a Ph.D. in Computer Science and has published extensively in international journals on Artificial Intelligence and Information Systems. Under his leadership, the Faculty is driving a digital transformation agenda to equip students with 21st-century tech skills.",
+        "photo": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop"
+      }
+    }
+  },
+  "admissions": {
+    "utmeRequirements": [
+      "Five (5) O'Level Credits in English Language, Mathematics, Physics, and any other two relevant science subjects.",
+      "Minimum UTME score as determined by the University Senate for the current academic session.",
+      "A satisfactory performance in the Post-UTME screening exercise."
+    ],
+    "directEntryRequirements": [
+      "A minimum of Upper Credit at National Diploma (ND) or its equivalent in relevant fields.",
+      "O'Level requirements as stated in the UTME requirements.",
+      "Direct Entry candidates must participate in the institutional screening process."
+    ],
+    "applicationProcedure": [
+      "Visit the official UNIOSUN admissions portal.",
+      "Create an account and generate a payment invoice for the application fee.",
+      "Complete the application form online, uploading all required documents.",
+      "Print the application slip and await further instructions regarding the screening date."
+    ]
+  },
+  "focitsa": {
+    "about": "The Faculty of Computing and Information Technology Student Association (FOCITSA), also known as NACOS, is the supreme student governing body in the faculty.",
+    "aimsAndObjectives": [
+      "To provide a healthy platform for attainment of academic excellence.",
+      "To represent and protect the interest of all members of the Faculty.",
+      "To foster and protect the interest of its members in pursuance of its aims and objectives.",
+      "To promote the good name of the faculty in Osun State University and beyond.",
+      "To establish effective group communications with faculty officials to protect student rights and privileges.",
+      "To maintain contacts and co-operation amongst registered students' societies and associations."
+    ]
+  }
+}
