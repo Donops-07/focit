@@ -3,9 +3,13 @@ export function ProfileCard({ name, subtitle, image, badge, children, variant = 
   let frameClasses = "bg-white rounded-xl overflow-hidden flex flex-col transition-all duration-300 ";
   
   if (variant === "president") {
-    frameClasses += "border-2 border-amber-400 shadow-[0_4px_20px_rgba(251,191,36,0.25)] hover:shadow-[0_8px_30px_rgba(251,191,36,0.4)] transform hover:-translate-y-1 relative z-10";
+    frameClasses += "student-frame shadow-[0_8px_30px_rgba(251,191,36,0.4)] transform hover:-translate-y-1 relative z-10";
   } else if (variant === "vice-president") {
     frameClasses += "border-2 border-slate-300 shadow-md hover:shadow-xl hover:border-indigo-400 transform hover:-translate-y-1 relative z-10";
+  } else if (variant === "dean-frame") {
+    frameClasses += "dean-frame shadow-xl transform hover:-translate-y-1 relative z-10";
+  } else if (variant === "student-frame") {
+    frameClasses += "student-frame shadow-xl transform hover:-translate-y-1 relative z-10";
   } else {
     frameClasses += "border border-slate-200 shadow-sm hover:shadow-md";
   }

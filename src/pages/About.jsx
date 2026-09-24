@@ -93,6 +93,7 @@ export default function About() {
                     name={leader.name}
                     subtitle={leader.title}
                     image={leader.photo}
+                    variant={leader.title.toLowerCase().includes("dean") ? "dean-frame" : "default"}
                   />
                 ))}
               </div>

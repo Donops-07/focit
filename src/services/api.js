@@ -423,10 +423,15 @@ export async function getHomeDashboard(options = {}) {
   const leaders = await getStudentLeaders({ branch: "executive" }, options);
   const currentPresident = leaders.find(l => l.role.toLowerCase() === "president");
 
+  // Get Best Graduating Student
+  const roh = await getRollOfHonour({ level: "faculty" }, options);
+  const bestGraduatingStudent = roh.find(r => r.award === "Best Graduating Student");
+
   return {
     latestFeed: topFeed,
     featuredProjects: topProjects,
-    currentPresident
+    currentPresident,
+    bestGraduatingStudent
   };
 }
 

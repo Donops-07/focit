@@ -21,7 +21,7 @@ export async function homeLoader({ request }) {
 
 // --- MAIN PAGE ---
 export default function Home() {
-  const { latestFeed, featuredProjects, currentPresident } = useLoaderData();
+  const { latestFeed, featuredProjects, currentPresident, bestGraduatingStudent } = useLoaderData();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -216,11 +216,31 @@ export default function Home() {
                     subtitle={`FOCITSA ${currentPresident.role}`}
                     image={currentPresident.photo}
                     badge={currentPresident.department}
-                    variant="president"
+                    variant="student-frame"
                   >
                     <Link to="/focitsa" className="mt-2 inline-flex justify-center w-full px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors">
                       View Union Portal
                     </Link>
+                  </ProfileCard>
+                )}
+              </div>
+
+              {/* Best Graduating Student */}
+              <div className="mt-12">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-slate-900">Academic Excellence</h2>
+                </div>
+                {bestGraduatingStudent && (
+                  <ProfileCard 
+                    name={bestGraduatingStudent.name}
+                    subtitle={`${bestGraduatingStudent.award} (${bestGraduatingStudent.year})`}
+                    image={bestGraduatingStudent.photo}
+                    badge={bestGraduatingStudent.department}
+                    variant="student-frame"
+                  >
+                    <div className="mt-2 text-center text-sm font-medium text-slate-700 bg-slate-50 py-2 rounded-lg border border-slate-100 mb-2">
+                      CGPA: {bestGraduatingStudent.cgpa}
+                    </div>
                   </ProfileCard>
                 )}
               </div>

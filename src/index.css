@@ -1397,3 +1397,85 @@
 .animate-slide-up-fade {
   animation: slide-up-fade 0.4s ease-out forwards;
 }
+
+/* ===================================================================
+   CUSTOM FRAMES
+   =================================================================== */
+
+/* Dean Frame - Geometric minimal line frame with corner accents */
+.dean-frame {
+  position: relative;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-blue-darker);
+  padding: 4px;
+}
+
+.dean-frame::before,
+.dean-frame::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.dean-frame::before {
+  top: -4px;
+  left: -4px;
+  border-top: 2px solid var(--color-blue-darker);
+  border-left: 2px solid var(--color-blue-darker);
+}
+
+.dean-frame::after {
+  bottom: -4px;
+  right: -4px;
+  border-bottom: 2px solid var(--color-blue-darker);
+  border-right: 2px solid var(--color-blue-darker);
+}
+
+/* Student/President Frame - Sci-Fi / Tech inspired frame */
+.student-frame {
+  position: relative;
+  background-color: var(--color-surface);
+  border: 3px solid var(--color-blue-primary);
+  border-radius: 4px;
+  box-shadow: 0 0 15px rgba(10, 17, 66, 0.2), inset 0 0 10px rgba(10, 17, 66, 0.1);
+  overflow: hidden;
+}
+
+.student-frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  pointer-events: none;
+  z-index: 5;
+  clip-path: polygon(0 15px, 15px 0, calc(100% - 15px) 0, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px));
+}
+
+.student-frame::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 12px;
+  background: var(--color-blue-light);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  z-index: 11;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.student-frame > div:first-child {
+  /* Give image some inner spacing to sit inside the frame */
+  margin: 6px;
+  height: calc(12rem - 12px); /* adjust h-48 */
+  width: calc(100% - 12px);
+  border-radius: 4px;
+}
