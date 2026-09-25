@@ -10,6 +10,7 @@ import { ResearchRepository, researchLoader, StudentProjectRepository, studentPr
 import NewsEvents, { newsEventsLoader } from "./pages/NewsEvents";
 import AlumniPortal, { alumniLoader } from "./pages/AlumniPortal";
 import Home, { homeLoader } from "./pages/Home";
+import FacultyExplorer, { explorerLoader } from "./pages/FacultyExplorer";
 import About from "./pages/About";
 import Admissions from "./pages/Admissions";
 import Focitsa, { focitsaLoader } from "./pages/Focitsa";
@@ -34,6 +35,12 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />,
         loader: homeLoader,
+        errorElement: <RootErrorBoundary />,
+      },
+      {
+        path: "explore",
+        element: <FacultyExplorer />,
+        loader: explorerLoader,
         errorElement: <RootErrorBoundary />,
       },
       {

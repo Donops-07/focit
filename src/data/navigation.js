@@ -55,6 +55,10 @@ export const NAV_LINKS = [
     path: "/",
   },
   {
+    label: "Explore",
+    path: "/explore",
+  },
+  {
     label: "About",
     path: "/about",
   },

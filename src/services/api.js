@@ -39,6 +39,14 @@ const DEPARTMENTS = [
   { id: DEPT_LIS_ID, name: "Library & Information Science", shortName: "LIS", slug: "library-and-information-science", icon: "BookOpen", color: "orange" }
 ];
 
+const MOCK_LABS = [
+  { id: "lab-1", name: "Advanced AI & Robotics Lab", shortName: "AI Lab", description: "State-of-the-art facility for machine learning models and robotic automation research.", icon: "Cpu", relatedDept: DEPT_CS_ID },
+  { id: "lab-2", name: "Cyber Defense Command Center", shortName: "Cyber Lab", description: "Simulated network environments for penetration testing and threat analysis.", icon: "Shield", relatedDept: DEPT_CYB_ID },
+  { id: "lab-3", name: "Software Development Studio", shortName: "Dev Studio", description: "Collaborative workspace for agile software engineering and system design.", icon: "TerminalSquare", relatedDept: DEPT_SWE_ID },
+  { id: "lab-4", name: "Data Analytics & Big Data Lab", shortName: "Data Lab", description: "High-performance computing cluster for processing massive datasets.", icon: "Database", relatedDept: DEPT_DSC_ID },
+  { id: "lab-5", name: "Networking & IoT Hub", shortName: "IoT Lab", description: "Hardware testing facility for Internet of Things and advanced network protocols.", icon: "Wifi", relatedDept: DEPT_INT_ID }
+];
+
 const STAFF_DIRECTORY = [
   // Computer Science Staff
   {
@@ -427,12 +435,38 @@ export async function getHomeDashboard(options = {}) {
   const roh = await getRollOfHonour({ level: "faculty" }, options);
   const bestGraduatingStudent = roh.find(r => r.award === "Best Graduating Student");
 
+  // Mock Analytics Data (Simulating response from Plausible/Umami API via our BFF)
+  // We simulate a 10% chance of the 3rd-party vendor failing or rate-limiting us.
+  const visitorStats = Math.random() > 0.1 ? {
+    totalPageViews: 12847,
+    monthlyVisitors: 1203,
+    todaysVisits: 87,
+    lastUpdated: new Date().toISOString()
+  } : null;
+
   return {
     latestFeed: topFeed,
     featuredProjects: topProjects,
     currentPresident,
-    bestGraduatingStudent
+    bestGraduatingStudent,
+    visitorStats,
+    facultyMetrics: {
+      students: 1524,
+      departments: DEPARTMENTS.length,
+      labs: MOCK_LABS.length,
+      staff: STAFF_DIRECTORY.length,
+      researchPapers: 54
+    }
   };
+}
+
+export async function getFacultyLabs(options = {}) {
+  if (!USE_MOCK) return fetchApi('/labs', options);
+  
+  await simulateDelay(150);
+  if (options.signal?.aborted) throw new DOMException("Aborted", "AbortError");
+  
+  return MOCK_LABS;
 }
 
 /**
