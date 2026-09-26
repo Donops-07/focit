@@ -120,7 +120,7 @@ export default function AlumniPortal() {
         <div className="flex flex-col items-center text-center mb-16">
           <div className="relative w-full max-w-4xl h-64 sm:h-80 md:h-96 mb-8 rounded-2xl overflow-hidden shadow-lg">
             <img 
-              src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1200&auto=format&fit=crop" 
+              src="https://images.unsplash.com/photo-1523580494112-071dcb849aa8?q=80&w=1200&auto=format&fit=crop" 
               alt="Graduating Students" 
               className="absolute inset-0 w-full h-full object-cover"
             />

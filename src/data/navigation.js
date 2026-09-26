@@ -87,6 +87,10 @@ export const NAV_LINKS = [
     path: "/focitsa",
   },
   {
+    label: "Student Affairs",
+    path: "/student-affairs",
+  },
+  {
     label: "Alumni",
     path: "/alumni",
   },

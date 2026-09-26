@@ -45,12 +45,17 @@ function DepartmentHero({ department }) {
   return (
     <section 
       key={`hero-${department.slug}`}
-      className="animate-slide-up-fade w-full pt-44 pb-28 md:pt-48 md:pb-32 relative overflow-hidden bg-cover bg-center text-white"
-      style={{ backgroundImage: 'url("/focit-main-building.png")' }}
+      className="animate-slide-up-fade w-full pt-44 pb-28 md:pt-48 md:pb-32 relative overflow-hidden text-white"
     >
-      {/* Blue overlay — kept translucent so the building image shows through */}
-      <div className="absolute inset-0 bg-blue-900/40 mix-blend-multiply"></div>
-      <div className="absolute inset-0 bg-blue-dark/25"></div>
+      {/* Background Image Layer */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: 'url("/focit-main-building.png")' }}
+      ></div>
+      
+      {/* Blue overlay — translucent so the building image shows through */}
+      <div className="absolute inset-0 bg-blue-900/70 mix-blend-multiply"></div>
+      <div className="absolute inset-0 bg-[#0a1142]/60"></div>
       
       {/* Inner wrapper: constrained to match navbar/footer alignment */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -148,10 +153,12 @@ function StaffGrid({ staff, departmentSlug }) {
   return (
     <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
       {staff.map((member) => (
-        <Link
+        <a
           key={member.id}
-          to={`/departments/${departmentSlug}/staff/${member.slug}`}
-          className="group bg-surface border border-border rounded-2xl overflow-hidden hover:border-blue-light hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          href={`https://uniosun.edu.ng/staff/${member.slug}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group bg-surface border border-border rounded-2xl overflow-hidden hover:border-blue-light hover:shadow-xl hover:-translate-y-1 transition-all duration-300 block"
         >
           <div className="aspect-square sm:aspect-[4/3] bg-gray-100 relative overflow-hidden group-hover:bg-blue-50 transition-colors">
             {/* Fallback avatar block */}
@@ -168,7 +175,7 @@ function StaffGrid({ staff, departmentSlug }) {
               <span className="font-semibold text-gray-700">Interests:</span> {member.researchInterests?.join(", ")}
             </div>
           </div>
-        </Link>
+        </a>
       ))}
     </div>
   );

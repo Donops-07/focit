@@ -1,6 +1,7 @@
 import { Outlet, useNavigation, ScrollRestoration } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import Tutorial from "../ui/Tutorial";
 import { cn } from "../../lib/utils";
 
 /**
@@ -15,6 +16,7 @@ export default function Layout() {
   return (
     <div className="site-wrapper">
       <ScrollRestoration />
+      <Tutorial />
       <Navbar />
 
       {/* Loading bar — visible during route transitions */}

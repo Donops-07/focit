@@ -34,7 +34,7 @@ const DEPARTMENTS = [
   { id: DEPT_CYB_ID, name: "Cyber Security", shortName: "CYB", slug: "cyber-security", icon: "ShieldAlert", color: "red" },
   { id: DEPT_SWE_ID, name: "Software Engineering", shortName: "SWE", slug: "software-engineering", icon: "Code", color: "purple" },
   { id: DEPT_INS_ID, name: "Information Systems", shortName: "INS", slug: "information-systems", icon: "Database", color: "amber" },
-  { id: DEPT_INT_ID, name: "Information Technology", shortName: "INT", slug: "information-technology", icon: "Network", color: "teal" },
+  { id: DEPT_INT_ID, name: "Information Technology", shortName: "IFT", slug: "information-technology", icon: "Network", color: "teal" },
   { id: DEPT_DSC_ID, name: "Data Science", shortName: "DSC", slug: "data-science", icon: "LineChart", color: "indigo" },
   { id: DEPT_LIS_ID, name: "Library & Information Science", shortName: "LIS", slug: "library-and-information-science", icon: "BookOpen", color: "orange" }
 ];
@@ -462,10 +462,10 @@ export async function getHomeDashboard(options = {}) {
 
 export async function getFacultyLabs(options = {}) {
   if (!USE_MOCK) return fetchApi('/labs', options);
-  
+
   await simulateDelay(150);
   if (options.signal?.aborted) throw new DOMException("Aborted", "AbortError");
-  
+
   return MOCK_LABS;
 }
 

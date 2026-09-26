@@ -12,6 +12,7 @@ import AlumniPortal, { alumniLoader } from "./pages/AlumniPortal";
 import Home, { homeLoader } from "./pages/Home";
 import FacultyExplorer, { explorerLoader } from "./pages/FacultyExplorer";
 import About from "./pages/About";
+import StudentAffairs from "./pages/StudentAffairs";
 import Admissions from "./pages/Admissions";
 import Focitsa, { focitsaLoader } from "./pages/Focitsa";
 import "./index.css";
@@ -46,6 +47,11 @@ const router = createBrowserRouter([
       {
         path: "about",
         element: <About />,
+        errorElement: <RootErrorBoundary />,
+      },
+      {
+        path: "student-affairs",
+        element: <StudentAffairs />,
         errorElement: <RootErrorBoundary />,
       },
       {

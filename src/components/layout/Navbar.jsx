@@ -20,6 +20,7 @@ export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isNavHovered, setIsNavHovered] = useState(false);
   const dropdownRef = useRef(null);
   const location = useLocation();
 
@@ -103,7 +104,12 @@ export default function Navbar() {
       </div>
 
       {/* Main Navigation */}
-      <nav className="main-nav" ref={dropdownRef}>
+      <nav 
+        className="main-nav relative" 
+        ref={dropdownRef}
+        onMouseEnter={() => setIsNavHovered(true)}
+        onMouseLeave={() => setIsNavHovered(false)}
+      >
         <div className="main-nav__inner">
           {/* Logo / Brand */}
           <Link to="/" className="nav-brand">
@@ -118,7 +124,7 @@ export default function Navbar() {
 
           {/* Desktop Nav Links */}
           <ul className="nav-links">
-            {NAV_LINKS.map((item) => (
+            {NAV_LINKS.slice(0, 5).map((item) => (
               <li
                 key={item.label}
                 className={cn(
@@ -196,6 +202,55 @@ export default function Navbar() {
           >
             {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
+        </div>
+
+        {/* Expanded Navigation Drawer for remaining items (Desktop) */}
+        <div 
+          className={cn(
+            "hidden lg:block absolute left-0 w-full transition-all duration-300 z-[90]",
+            isNavHovered ? "max-h-[300px] opacity-100 border-b shadow-md py-6" : "max-h-0 opacity-0 border-transparent py-0 overflow-hidden pointer-events-none"
+          )}
+          style={{ 
+            top: "100%", 
+            backgroundColor: "var(--color-surface)", 
+            borderColor: "var(--color-border)"
+          }}
+        >
+          <div className="max-w-[1280px] mx-auto px-6">
+            <div className="flex flex-wrap gap-8 items-start justify-center">
+              {NAV_LINKS.slice(5).map((item) => (
+                <div key={item.label} className="flex flex-col min-w-[150px]">
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) =>
+                      cn(
+                        "font-medium text-[0.95rem] pb-2 border-b-2 transition-all w-fit",
+                        isActive 
+                          ? "text-[var(--color-blue-primary)] border-[var(--color-blue-primary)] font-semibold" 
+                          : "text-[var(--color-text-secondary)] border-transparent hover:text-[var(--color-blue-primary)] hover:border-[var(--color-blue-lightest)]"
+                      )
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                  {item.children && (
+                    <ul className="mt-3 flex flex-col gap-2">
+                      {item.children.map((child) => (
+                        <li key={child.path}>
+                          <NavLink
+                            to={child.path}
+                            className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-blue-primary)] transition-colors"
+                          >
+                            {child.label}
+                          </NavLink>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </nav>
 
