@@ -187,7 +187,7 @@ const MOCK_STUDENT_LEADERS = [
   { id: "ldr-2", name: "Ayodeji Ayofe", role: "Vice President", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_SWE_ID, photo: "/vice-president.jpeg" },
   { id: "ldr-6", name: "Adeniji Daniel", role: "General Secretary", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/general-secretary.jpeg" },
   { id: "ldr-7", name: "Kemi Ojo", role: "Financial Secretary", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_INS_ID, photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" },
-  { id: "ldr-8", name: "Adekunle Sodiq Gbolahan", role: "Public Relations Officer", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" },
+  { id: "ldr-8", name: "Adekunle Sodiq Gbolahan", role: "Public Relations Officer", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/public-relations-officer.jpeg" },
   { id: "ldr-9", name: "Aishat Bukunmi", role: "Academic Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_LIS_ID, photo: "/academic-director.jpeg" },
   { id: "ldr-10", name: "Akinsola Helen Olajumoke", role: "Welfare Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" },
   { id: "ldr-11", name: "Oyegoke Ayanfeoluwa (20.10)", role: "Social Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80" },

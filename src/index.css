@@ -1480,7 +1480,7 @@
 .student-frame > div:first-child {
   /* Give image some inner spacing to sit inside the frame */
   margin: 6px;
-  height: calc(12rem - 12px); /* adjust h-48 */
+  /* aspect ratio is handled by Tailwind classes in the component */
   width: calc(100% - 12px);
   border-radius: 4px;
 }

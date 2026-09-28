@@ -1,4 +1,4 @@
-export function ProfileCard({ name, subtitle, image, imagePosition = "object-cover", badge, children, variant = "default" }) {
+export function ProfileCard({ name, subtitle, image, imagePosition = "object-cover object-top", badge, children, variant = "default" }) {
   
   let frameClasses = "bg-white rounded-xl overflow-hidden flex flex-col transition-all duration-300 ";
   
@@ -16,7 +16,7 @@ export function ProfileCard({ name, subtitle, image, imagePosition = "object-cov
 
   return (
     <div className={frameClasses}>
-      <div className="h-48 w-full bg-slate-100 relative">
+      <div className="aspect-[4/5] sm:aspect-square w-full bg-slate-100 relative">
         <img 
           src={image || "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop"} 
           alt={name} 
