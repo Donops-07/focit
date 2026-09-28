@@ -153,29 +153,36 @@ function StaffGrid({ staff, departmentSlug }) {
   return (
     <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
       {staff.map((member) => (
-        <a
+        <div
           key={member.id}
-          href={`https://uniosun.edu.ng/staff/${member.slug}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group bg-surface border border-border rounded-2xl overflow-hidden hover:border-blue-light hover:shadow-xl hover:-translate-y-1 transition-all duration-300 block"
+          className="group flex flex-col bg-surface border border-border rounded-2xl overflow-hidden hover:border-blue-light hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
         >
-          <div className="aspect-square sm:aspect-[4/3] bg-gray-100 relative overflow-hidden group-hover:bg-blue-50 transition-colors">
+          <Link to={`/departments/${departmentSlug}/staff/${member.slug}`} className="block relative aspect-square sm:aspect-[4/3] bg-gray-100 overflow-hidden group-hover:bg-blue-50 transition-colors">
             {/* Fallback avatar block */}
             <div className="absolute inset-0 flex items-center justify-center bg-blue-lightest/50 text-blue-primary text-5xl font-bold group-hover:scale-110 transition-transform duration-500">
               {member.name.charAt(0)}
             </div>
-          </div>
-          <div className="p-8">
-            <h4 className="font-bold text-gray-900 text-xl group-hover:text-blue-primary transition-colors line-clamp-1 mb-2">
-              {member.name}
-            </h4>
+          </Link>
+          <div className="p-8 flex flex-col flex-1">
+            <Link to={`/departments/${departmentSlug}/staff/${member.slug}`}>
+              <h4 className="font-bold text-gray-900 text-xl group-hover:text-blue-primary transition-colors line-clamp-1 mb-2">
+                {member.name}
+              </h4>
+            </Link>
             <p className="text-sm text-blue-primary/80 font-semibold mb-5">{member.title}</p>
-            <div className="text-sm text-gray-500 line-clamp-3 leading-relaxed">
+            <div className="text-sm text-gray-500 line-clamp-3 leading-relaxed mb-6">
               <span className="font-semibold text-gray-700">Interests:</span> {member.researchInterests?.join(", ")}
             </div>
+            <a
+              href={`https://uniosun.edu.ng/staff/${member.slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-auto inline-flex items-center justify-center px-4 py-2 bg-blue-50 text-blue-primary rounded-lg text-sm font-bold hover:bg-blue-100 transition-colors"
+            >
+              See Official Profile
+            </a>
           </div>
-        </a>
+        </div>
       ))}
     </div>
   );
@@ -230,6 +237,9 @@ function DepartmentRollOfHonour({ rollOfHonour }) {
               <div className="text-sm text-slate-600 space-y-1">
                 <p><span className="font-semibold text-slate-900">Matric No:</span> {alumnus.matricNo}</p>
                 <p><span className="font-semibold text-slate-900">CGPA:</span> {alumnus.cgpa}</p>
+                {alumnus.bio && (
+                  <p className="mt-3 text-justify leading-relaxed line-clamp-6 text-xs text-gray-500">{alumnus.bio}</p>
+                )}
               </div>
             </ProfileCard>
           ))}

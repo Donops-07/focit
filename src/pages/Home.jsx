@@ -12,7 +12,8 @@ import {
   Eye,
   Calendar,
   MousePointerClick,
-  AlertCircle
+  AlertCircle,
+  X
 } from "lucide-react";
 import { getHomeDashboard } from "../services/api";
 import { ProfileCard } from "../components/ui/ProfileCard";
@@ -38,7 +39,8 @@ export default function Home() {
   const { 
     latestFeed, 
     featuredProjects, 
-    currentPresident, 
+    currentPresident,
+    bestGraduatingStudent,
     facultyMetrics,
     visitorStats
   } = useLoaderData();
@@ -46,6 +48,9 @@ export default function Home() {
   // Unified Intersection Observer State
   const [animateFacultyStats, setAnimateFacultyStats] = useState(false);
   const [animateVisitorStats, setAnimateVisitorStats] = useState(false);
+  
+  // BGS Modal State
+  const [isBGSModalOpen, setIsBGSModalOpen] = useState(false);
   
   const facultyStatsRef = useRef(null);
   const visitorStatsRef = useRef(null);
@@ -300,6 +305,83 @@ export default function Home() {
                     Browse All Projects
                   </Link>
                 </div>
+              </div>
+
+              {/* Hall of Fame Spotlight */}
+              <div>
+                <div className="flex items-center justify-between mb-6 pb-2 border-b-2 border-slate-200">
+                  <h2 className="text-2xl font-bold text-slate-900 font-heading">Hall of Fame</h2>
+                </div>
+                {bestGraduatingStudent && (
+                  <>
+                    <ProfileCard 
+                      name={bestGraduatingStudent.name}
+                      subtitle={`${bestGraduatingStudent.award} (${bestGraduatingStudent.year})`}
+                      image={bestGraduatingStudent.photo}
+                      imagePosition="object-cover object-top"
+                      badge={bestGraduatingStudent.department}
+                      variant="student-frame"
+                    >
+                      <div className="mt-2 text-sm text-slate-600 space-y-3">
+                        <p><span className="font-semibold text-slate-900">CGPA:</span> {bestGraduatingStudent.cgpa}</p>
+                        <p><span className="font-semibold text-slate-900">Matric No:</span> {bestGraduatingStudent.matricNo}</p>
+                        {bestGraduatingStudent.bio && (
+                          <button 
+                            onClick={() => setIsBGSModalOpen(true)}
+                            className="w-full inline-flex items-center justify-center px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-bold hover:bg-indigo-100 transition-colors"
+                          >
+                            Read about the BGS
+                          </button>
+                        )}
+                      </div>
+                    </ProfileCard>
+
+                    {/* BGS Modal */}
+                    {isBGSModalOpen && (
+                      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 pt-16 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+                        <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 mt-8 sm:mt-0">
+                          <div className="flex items-center justify-between p-6 border-b border-slate-100">
+                            <h3 className="text-xl font-bold font-heading text-slate-900">About the BGS</h3>
+                            <button 
+                              onClick={() => setIsBGSModalOpen(false)}
+                              className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+                            >
+                              <X size={20} />
+                            </button>
+                          </div>
+                          <div className="p-6 overflow-y-auto max-h-[60vh]">
+                            <div className="flex flex-col sm:flex-row items-center gap-6 mb-6">
+                              <img 
+                                src={bestGraduatingStudent.photo} 
+                                alt={bestGraduatingStudent.name} 
+                                className="w-24 h-24 rounded-full object-cover object-top border-4 border-indigo-100 shadow-sm"
+                              />
+                              <div className="text-center sm:text-left">
+                                <h4 className="text-lg font-bold text-slate-900 mb-1">{bestGraduatingStudent.name}</h4>
+                                <p className="text-indigo-600 font-medium text-sm">{bestGraduatingStudent.award}</p>
+                                <div className="flex flex-wrap gap-2 justify-center sm:justify-start mt-2">
+                                  <span className="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded">CGPA: {bestGraduatingStudent.cgpa}</span>
+                                  <span className="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded">{bestGraduatingStudent.department?.shortName || "CS"}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="prose prose-slate prose-sm text-slate-600">
+                              <p className="leading-relaxed text-justify">{bestGraduatingStudent.bio}</p>
+                            </div>
+                          </div>
+                          <div className="p-4 bg-slate-50 border-t border-slate-100 text-right">
+                            <button 
+                              onClick={() => setIsBGSModalOpen(false)}
+                              className="px-6 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
+                            >
+                              Close
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
 
               {/* Leadership Spotlight */}

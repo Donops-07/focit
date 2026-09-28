@@ -157,7 +157,7 @@ export default function Footer() {
             </li>
             <li>
               <a
-                href="https://uniosun.edu.ng"
+                href="https://portal.uniosun.edu.ng"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer__column-link footer__column-link--external"
@@ -168,7 +168,7 @@ export default function Footer() {
             </li>
             <li>
               <a
-                href="https://portal.uniosun.edu.ng"
+                href="https://uniosun.edu.ng/library/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer__column-link footer__column-link--external"

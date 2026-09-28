@@ -184,25 +184,47 @@ const MOCK_FEED = [
 
 const MOCK_STUDENT_LEADERS = [
   { id: "ldr-1", name: "Akingbehin Oluwadarasimi", role: "President", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=400&q=80" },
-  { id: "ldr-2", name: "Ayodeji Ayofe", role: "Vice President", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CYB_ID, photo: "https://images.unsplash.com/photo-1531123897727-8f129e1bf98c?w=400&q=80" },
-  { id: "ldr-6", name: "Adeniji Daniel", role: "General Secretary", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_SWE_ID, photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80" },
+  { id: "ldr-2", name: "Ayodeji Ayofe", role: "Vice President", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_SWE_ID, photo: "/vice-president.jpeg" },
+  { id: "ldr-6", name: "Adeniji Daniel", role: "General Secretary", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/general-secretary.jpeg" },
   { id: "ldr-7", name: "Kemi Ojo", role: "Financial Secretary", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_INS_ID, photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" },
-  { id: "ldr-8", name: "Adekunle Sodiq Gbolahan", role: "Public Relations Officer", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_INT_ID, photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" },
-  { id: "ldr-9", name: "Aishat Bukunmi", role: "Academic Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_DSC_ID, photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80" },
-  { id: "ldr-10", name: "Akinsola Helen Olajumoke", role: "Welfare Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_LIS_ID, photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" },
+  { id: "ldr-8", name: "Adekunle Sodiq Gbolahan", role: "Public Relations Officer", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" },
+  { id: "ldr-9", name: "Aishat Bukunmi", role: "Academic Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_LIS_ID, photo: "/academic-director.jpeg" },
+  { id: "ldr-10", name: "Akinsola Helen Olajumoke", role: "Welfare Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" },
   { id: "ldr-11", name: "Oyegoke Ayanfeoluwa (20.10)", role: "Social Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80" },
-  { id: "ldr-12", name: "Ayomide Balogun", role: "Sport Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CYB_ID, photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80" },
-  { id: "ldr-13", name: "Rabiu Adam Akorede", role: "Software Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_SWE_ID, photo: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=400&q=80" },
+  { id: "ldr-12", name: "Ayomide Balogun", role: "Sport Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_DSC_ID, photo: "/sport-director.jpeg" },
+  { id: "ldr-13", name: "Rabiu Adam Akorede", role: "Software Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=400&q=80" },
   { id: "ldr-3", name: "Chinedu Okeke", role: "Speaker", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_SWE_ID, photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80" },
   { id: "ldr-4", name: "Aisha Musa", role: "Clerk", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_INS_ID, photo: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80" },
-  { id: "ldr-5", name: "Emeka John", role: "President", branch: "executive", academicSession: "2025/2026", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" }
+  { id: "ldr-5", name: "Emeka John", role: "President", branch: "executive", academicSession: "2025/2026", departmentId: DEPT_SWE_ID, photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" }
 ];
 
 const MOCK_ROLL_OF_HONOUR = [
-  { id: "roh-1", level: "faculty", name: "David Olanrewaju", award: "Best Graduating Student", year: "2025", departmentId: DEPT_CS_ID, cgpa: "4.92", matricNo: "2021/40001", photo: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80" },
+  {
+    id: "roh-1",
+    level: "faculty",
+    name: "Lawal Abdulmuiz Opeyemi",
+    award: "Best Graduating Student",
+    year: "2025",
+    departmentId: DEPT_CS_ID,
+    cgpa: "4.68",
+    matricNo: "2022/40950",
+    photo: "/focit-best-graduating-student.jpg",
+    bio: "Lawal Abdulmuiz Opeyemi is a Computer Science graduate who graduated as the Best Student in both his Department and the Faculty, achieving an outstanding CGPA of 4.68. A dedicated peer mentor, he served as an MSSN tutor from his first year through his third year. His commitment to academic leadership culminated in his roles as the Departmental Academic Director for Computer Science (2024/2025) and subsequently the Faculty Academic Director (2025/2026). During his tenure, he successfully drove technical excellence among his peers by organizing numerous tutorial sessions, inter-departmental competitions, and a specialized Agentic AI Workshop."
+  },
   { id: "roh-2", level: "faculty", name: "Grace Folorunsho", award: "Best Female Graduate", year: "2024", departmentId: DEPT_CYB_ID, cgpa: "4.85", matricNo: "2021/56042", photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80" },
   { id: "roh-3", level: "department", name: "John Doe", award: "Best Graduating Student", year: "2025", departmentId: DEPT_SWE_ID, cgpa: "4.78", matricNo: "2021/40055", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80" },
-  { id: "roh-4", level: "department", name: "Jane Smith", award: "Best Graduating Student", year: "2025", departmentId: DEPT_CS_ID, cgpa: "4.80", matricNo: "2021/40012", photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" }
+  {
+    id: "roh-4",
+    level: "department",
+    name: "Lawal Abdulmuiz Opeyemi",
+    award: "Best Graduating Student",
+    year: "2025",
+    departmentId: DEPT_CS_ID,
+    cgpa: "4.68",
+    matricNo: "2022/40950",
+    photo: "/focit-best-graduating-student.jpg",
+    bio: "Lawal Abdulmuiz Opeyemi is a Computer Science graduate who graduated as the Best Student in both his Department and the Faculty, achieving an outstanding CGPA of 4.68. A dedicated peer mentor, he served as an MSSN tutor from his first year through his third year. His commitment to academic leadership culminated in his roles as the Departmental Academic Director for Computer Science (2024/2025) and subsequently the Faculty Academic Director (2025/2026). During his tenure, he successfully drove technical excellence among his peers by organizing numerous tutorial sessions, inter-departmental competitions, and a specialized Agentic AI Workshop."
+  }
 ];
 
 // --- UTILS ---

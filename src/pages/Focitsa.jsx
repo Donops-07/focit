@@ -24,14 +24,12 @@ export async function focitsaLoader({ request }) {
     getRollOfHonour({ level: "faculty" }, { signal: request.signal })
   ]);
   
-  const bestGraduatingStudent = roh.find(r => r.award === "Best Graduating Student" && r.year === "2025");
-
-  return { executives, legislative, session, currentSession: CURRENT_SESSION, bestGraduatingStudent };
+  return { executives, legislative, session, currentSession: CURRENT_SESSION };
 }
 
 // --- MAIN PAGE ---
 export default function Focitsa() {
-  const { executives, legislative, session, currentSession, bestGraduatingStudent } = useLoaderData();
+  const { executives, legislative, session, currentSession } = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSessionChange = (e) => {
@@ -91,30 +89,7 @@ export default function Focitsa() {
           </div>
         </section>
 
-        {/* BEST GRADUATING STUDENT SHOWCASE */}
-        {bestGraduatingStudent && (
-          <section className="mb-16">
-            <div className="border-b border-slate-200 pb-4 mb-8">
-              <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
-                Academic Excellence
-              </h2>
-              <p className="text-slate-500 mt-2">Celebrating our outstanding scholars.</p>
-            </div>
-            <div className="max-w-md mx-auto">
-              <ProfileCard 
-                name={bestGraduatingStudent.name}
-                subtitle={`${bestGraduatingStudent.award} (${bestGraduatingStudent.year})`}
-                image={bestGraduatingStudent.photo}
-                badge={bestGraduatingStudent.department}
-                variant="student-frame"
-              >
-                <div className="mt-2 text-center text-sm font-medium text-slate-700 bg-slate-50 py-2 rounded-lg border border-slate-100">
-                  CGPA: {bestGraduatingStudent.cgpa}
-                </div>
-              </ProfileCard>
-            </div>
-          </section>
-        )}
+
 
         {/* EXECUTIVES */}
         <section className="mb-16">
@@ -141,6 +116,7 @@ export default function Focitsa() {
                         name={leader.name}
                         subtitle={leader.role}
                         image={leader.photo}
+                        imagePosition="object-cover object-top"
                         badge={leader.department}
                         variant={variant}
                       />
@@ -173,6 +149,7 @@ export default function Focitsa() {
                   name={leader.name}
                   subtitle={leader.role}
                   image={leader.photo}
+                  imagePosition="object-cover object-top"
                   badge={leader.department}
                 />
               ))}
