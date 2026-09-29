@@ -183,13 +183,13 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-            <div className="w-full lg:w-1/3 flex justify-center">
-              <div className="relative">
-                <div className="absolute inset-0 bg-[#FFB81C] rounded-2xl transform translate-x-4 translate-y-4"></div>
+            <div className="w-full lg:w-1/3 flex justify-center px-4 sm:px-0">
+              <div className="relative w-full max-w-xs sm:max-w-sm lg:max-w-none">
+                <div className="absolute inset-0 bg-[#FFB81C] rounded-2xl transform translate-x-3 translate-y-3 lg:translate-x-4 lg:translate-y-4"></div>
                 <img 
                   src={staticContent.about.leadership.dean.photo} 
                   alt={staticContent.about.leadership.dean.name} 
-                  className="relative z-10 w-64 h-80 lg:w-full lg:h-96 object-cover rounded-2xl border-4 border-white shadow-xl"
+                  className="relative z-10 w-full h-80 sm:h-96 lg:h-96 object-cover rounded-2xl border-4 border-white shadow-xl"
                 />
               </div>
             </div>
