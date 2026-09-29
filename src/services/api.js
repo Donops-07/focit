@@ -1,277 +1,24 @@
-/**
- * API Service Layer
- *
- * This module abstracts all data fetching behind a consistent interface.
- * Returns mock data from local JSON structures.
- */
+import { USE_MOCK, fetchApi, API_BASE } from './api/client.js';
+import { simulateDelay, createSearchIndex, paginateData, hydrateRelations } from './api/utils.js';
+import { CURRENT_SESSION } from './api/config.js';
 
-// Simulating UUIDs
-const DEPT_CS_ID = "uuid-dept-cs";
-const DEPT_CYB_ID = "uuid-dept-cyb";
-const DEPT_SWE_ID = "uuid-dept-swe";
-const DEPT_DSC_ID = "uuid-dept-dsc";
-const DEPT_INS_ID = "uuid-dept-ins";
-const DEPT_INT_ID = "uuid-dept-int";
-const DEPT_LIS_ID = "uuid-dept-lis";
-
-// Global Session Configuration
-export const CURRENT_SESSION = "2026/2027";
-
-// Environment Configuration
-const USE_MOCK = import.meta.env.VITE_USE_MOCK_API === 'true' || import.meta.env.VITE_USE_MOCK_API === undefined;
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
-
-async function fetchApi(endpoint, options = {}) {
-  const res = await fetch(`${API_BASE}${endpoint}`, { signal: options.signal });
-  if (!res.ok) throw new Error(`API Fetch failed: ${res.statusText}`);
-  return res.json();
-}
-
-// --- MOCK DATA ---
-
-const DEPARTMENTS = [
-  { id: DEPT_CS_ID, name: "Computer Science", shortName: "CSC", slug: "computer-science", icon: "Monitor", color: "blue" },
-  { id: DEPT_CYB_ID, name: "Cyber Security", shortName: "CYB", slug: "cyber-security", icon: "ShieldAlert", color: "red" },
-  { id: DEPT_SWE_ID, name: "Software Engineering", shortName: "SWE", slug: "software-engineering", icon: "Code", color: "purple" },
-  { id: DEPT_INS_ID, name: "Information Systems", shortName: "INS", slug: "information-systems", icon: "Database", color: "amber" },
-  { id: DEPT_INT_ID, name: "Information Technology", shortName: "IFT", slug: "information-technology", icon: "Network", color: "teal" },
-  { id: DEPT_DSC_ID, name: "Data Science", shortName: "DSC", slug: "data-science", icon: "LineChart", color: "indigo" },
-  { id: DEPT_LIS_ID, name: "Library & Information Science", shortName: "LIS", slug: "library-and-information-science", icon: "BookOpen", color: "orange" }
-];
-
-const MOCK_LABS = [
-  { id: "lab-1", name: "Advanced AI & Robotics Lab", shortName: "AI Lab", description: "State-of-the-art facility for machine learning models and robotic automation research.", icon: "Cpu", relatedDept: DEPT_CS_ID },
-  { id: "lab-2", name: "Cyber Defense Command Center", shortName: "Cyber Lab", description: "Simulated network environments for penetration testing and threat analysis.", icon: "Shield", relatedDept: DEPT_CYB_ID },
-  { id: "lab-3", name: "Software Development Studio", shortName: "Dev Studio", description: "Collaborative workspace for agile software engineering and system design.", icon: "TerminalSquare", relatedDept: DEPT_SWE_ID },
-  { id: "lab-4", name: "Data Analytics & Big Data Lab", shortName: "Data Lab", description: "High-performance computing cluster for processing massive datasets.", icon: "Database", relatedDept: DEPT_DSC_ID },
-  { id: "lab-5", name: "Networking & IoT Hub", shortName: "IoT Lab", description: "Hardware testing facility for Internet of Things and advanced network protocols.", icon: "Wifi", relatedDept: DEPT_INT_ID }
-];
-
-const STAFF_DIRECTORY = [
-  // Computer Science Staff
-  {
-    id: "uuid-staff-1",
-    department_id: DEPT_CS_ID,
-    slug: "s-m-adebayo",
-    name: "Prof. S. M. Adebayo",
-    title: "Professor & Head of Department",
-    qualifications: "B.Sc., M.Sc., Ph.D. (Computer Science)",
-    email: "sadebayo@uniosun.edu.ng",
-    researchInterests: ["Distributed Systems", "Cloud Computing", "Algorithm Design"],
-    bio: "Prof. Adebayo has over 20 years of experience in academia and industry. He leads the Distributed Systems research lab.",
-    courses: ["CSC 301: Data Structures", "CSC 411: Operating Systems II"],
-    publications: [
-      "Optimizing Resource Allocation in Cloud Computing using Genetic Algorithms (2023)"
-    ]
-  },
-  {
-    id: "uuid-staff-2",
-    department_id: DEPT_CS_ID,
-    slug: "a-k-ola",
-    name: "Dr. A. K. Ola",
-    title: "Senior Lecturer",
-    qualifications: "B.Sc., M.Sc., Ph.D. (Computer Science)",
-    email: "a.ola@uniosun.edu.ng",
-    researchInterests: ["Artificial Intelligence", "Machine Learning"],
-    bio: "Dr. Ola specializes in deep learning architectures and their application to natural language processing.",
-    courses: ["CSC 405: Artificial Intelligence", "CSC 202: Object-Oriented Programming"],
-    publications: []
-  },
-
-  // Cyber Security Staff
-  {
-    id: "uuid-staff-3",
-    department_id: DEPT_CYB_ID,
-    slug: "a-o-bello",
-    name: "Dr. A. O. Bello",
-    title: "Associate Professor",
-    qualifications: "B.Tech., M.Sc., Ph.D. (Cyber Security)",
-    email: "a.bello@uniosun.edu.ng",
-    researchInterests: ["Network Security", "Applied Cryptography"],
-    bio: "Dr. Bello is an expert in IoT network security and holds multiple patents in intrusion detection systems.",
-    courses: ["CYB 302: Cryptography", "CYB 401: Ethical Hacking"],
-    publications: [
-      "Deep Learning for Early Detection of Cybersecurity Threats in IoT Networks (2024)"
-    ]
-  },
-
-  // Software Engineering Staff
-  {
-    id: "uuid-staff-4",
-    department_id: DEPT_SWE_ID,
-    slug: "c-i-okeke",
-    name: "Dr. C. I. Okeke",
-    title: "Senior Lecturer",
-    qualifications: "B.Eng., M.Sc., Ph.D. (Software Engineering)",
-    email: "c.okeke@uniosun.edu.ng",
-    researchInterests: ["Agile Methodologies", "Software Quality Assurance"],
-    bio: "Dr. Okeke bridges the gap between industry software engineering practices and academic theory.",
-    courses: ["SWE 305: Software Architecture", "SWE 409: Software Testing"],
-    publications: [
-      "Agile Methodologies in Global Software Development (2024)"
-    ]
+let mocksCache = null;
+async function getMocks() {
+  if (!mocksCache) {
+    mocksCache = await import('./api/mocks.js');
   }
-];
-
-const MOCK_RESEARCH = [
-  { id: 1, title: "Deep Learning for Early Detection of Cybersecurity Threats in IoT Networks", authors: ["Dr. A. O. Bello", "T. K. Ojo"], department: "cyber-security", year: 2024, keywords: ["IoT", "Deep Learning", "Threat Detection", "Neural Networks"], researchArea: "Network Security", abstract: "This paper proposes a novel deep learning architecture for real-time anomaly detection in IoT environments." },
-  { id: 2, title: "Optimizing Resource Allocation in Cloud Computing using Genetic Algorithms", authors: ["Prof. S. M. Adebayo", "F. E. Nwachukwu"], department: "computer-science", year: 2023, keywords: ["Cloud Computing", "Genetic Algorithms", "Resource Allocation"], researchArea: "Distributed Systems", abstract: "We present a genetic algorithm-based approach to dynamic resource allocation in cloud data centers." }
-];
-
-const MOCK_PROJECTS = [
-  { id: 1, title: "Development of a Blockchain-Based Certificate Verification System", student: "Adebisi Olawale", matricNo: "2020/40001", supervisor: "Prof. S. M. Adebayo", department: "computer-science", year: 2024, abstract: "This project implements a decentralized application (DApp) using Ethereum smart contracts." },
-  { id: 2, title: "Design and Implementation of an Intrusion Detection System using Random Forest", student: "Ogunmola Titi", matricNo: "2020/40042", supervisor: "Dr. A. O. Bello", department: "cyber-security", year: 2024, abstract: "An intrusion detection system developed using Python and Scikit-learn." }
-];
-
-const MOCK_FEED = [
-  {
-    id: "feed-1",
-    type: "news",
-    title: "Faculty Receives Grant for AI Lab",
-    publishDate: "2026-09-10T10:00:00Z",
-    coverImage: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=600&auto=format&fit=crop",
-    summary: "A 50 million Naira grant has been awarded to establish a state-of-the-art Artificial Intelligence laboratory.",
-    relatedDepartmentIds: [DEPT_CS_ID, DEPT_DSC_ID],
-    metadata: {
-      author: "Dean's Office",
-      readTimeMins: 4
-    }
-  },
-  {
-    id: "feed-2",
-    type: "event",
-    title: "Cyber Security Dept Hosts Hackathon",
-    publishDate: "2026-09-15T09:00:00Z",
-    coverImage: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600&auto=format&fit=crop",
-    summary: "Join us for a 48-hour cybersecurity challenge covering penetration testing and cryptography.",
-    relatedDepartmentIds: [DEPT_CYB_ID],
-    metadata: {
-      startTime: "2026-10-20T08:00:00Z",
-      endTime: "2026-10-22T17:00:00Z",
-      venue: "Main Auditorium",
-      registrationLink: "https://register.example.com/hackathon"
-    }
-  },
-  {
-    id: "feed-3",
-    type: "news",
-    title: "New Software Engineering Curriculum Approved",
-    publishDate: "2026-09-18T14:30:00Z",
-    coverImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format&fit=crop",
-    summary: "The Senate has approved the revised curriculum focusing on cloud-native development and DevSecOps.",
-    relatedDepartmentIds: [DEPT_SWE_ID],
-    metadata: {
-      author: "Academic Board",
-      readTimeMins: 3
-    }
-  },
-  {
-    id: "feed-4",
-    type: "event",
-    title: "Tech Innovation Summit 2026",
-    publishDate: "2026-09-20T11:00:00Z",
-    coverImage: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=600&auto=format&fit=crop",
-    summary: "Annual faculty summit featuring industry leaders, student exhibitions, and alumni networking.",
-    relatedDepartmentIds: [DEPT_CS_ID, DEPT_SWE_ID, DEPT_INT_ID],
-    metadata: {
-      startTime: "2026-11-05T09:00:00Z",
-      endTime: "2026-11-06T18:00:00Z",
-      venue: "Faculty Complex",
-      registrationLink: "https://register.example.com/summit"
-    }
-  }
-];
-
-const MOCK_STUDENT_LEADERS = [
-  { id: "ldr-1", name: "Akingbehin Oluwadarasimi", role: "President", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=400&q=80" },
-  { id: "ldr-2", name: "Ayodeji Ayofe", role: "Vice President", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_SWE_ID, photo: "/vice-president.jpeg" },
-  { id: "ldr-6", name: "Adeniji Daniel", role: "General Secretary", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/general-secretary.jpeg" },
-  { id: "ldr-7", name: "Kemi Ojo", role: "Financial Secretary", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_INS_ID, photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" },
-  { id: "ldr-8", name: "Adekunle Sodiq Gbolahan", role: "Public Relations Officer", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/public-relations-officer.jpeg" },
-  { id: "ldr-9", name: "Aishat Bukunmi", role: "Academic Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_LIS_ID, photo: "/academic-director.jpeg" },
-  { id: "ldr-10", name: "Akinsola Helen Olajumoke", role: "Welfare Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" },
-  { id: "ldr-11", name: "Oyegoke Ayanfeoluwa (20.10)", role: "Social Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80" },
-  { id: "ldr-12", name: "Ayomide Balogun", role: "Sport Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_DSC_ID, photo: "/sport-director.jpeg" },
-  { id: "ldr-13", name: "Rabiu Adam Akorede", role: "Software Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=400&q=80" },
-  { id: "ldr-3", name: "Chinedu Okeke", role: "Speaker", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_SWE_ID, photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80" },
-  { id: "ldr-4", name: "Aisha Musa", role: "Clerk", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_INS_ID, photo: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80" },
-  { id: "ldr-5", name: "Emeka John", role: "President", branch: "executive", academicSession: "2025/2026", departmentId: DEPT_SWE_ID, photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" }
-];
-
-const MOCK_ROLL_OF_HONOUR = [
-  {
-    id: "roh-1",
-    level: "faculty",
-    name: "Lawal Abdulmuiz Opeyemi",
-    award: "Best Graduating Student",
-    year: "2025",
-    departmentId: DEPT_CS_ID,
-    cgpa: "4.68",
-    matricNo: "2022/40950",
-    photo: "/focit-best-graduating-student.jpg",
-    bio: "Lawal Abdulmuiz Opeyemi is a Computer Science graduate who graduated as the Best Student in both his Department and the Faculty, achieving an outstanding CGPA of 4.68. A dedicated peer mentor, he served as an MSSN tutor from his first year through his third year. His commitment to academic leadership culminated in his roles as the Departmental Academic Director for Computer Science (2024/2025) and subsequently the Faculty Academic Director (2025/2026). During his tenure, he successfully drove technical excellence among his peers by organizing numerous tutorial sessions, inter-departmental competitions, and a specialized Agentic AI Workshop."
-  },
-  { id: "roh-2", level: "faculty", name: "Grace Folorunsho", award: "Best Female Graduate", year: "2024", departmentId: DEPT_CYB_ID, cgpa: "4.85", matricNo: "2021/56042", photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80" },
-  { id: "roh-3", level: "department", name: "John Doe", award: "Best Graduating Student", year: "2025", departmentId: DEPT_SWE_ID, cgpa: "4.78", matricNo: "2021/40055", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80" },
-  {
-    id: "roh-4",
-    level: "department",
-    name: "Lawal Abdulmuiz Opeyemi",
-    award: "Best Graduating Student",
-    year: "2025",
-    departmentId: DEPT_CS_ID,
-    cgpa: "4.68",
-    matricNo: "2022/40950",
-    photo: "/focit-best-graduating-student.jpg",
-    bio: "Lawal Abdulmuiz Opeyemi is a Computer Science graduate who graduated as the Best Student in both his Department and the Faculty, achieving an outstanding CGPA of 4.68. A dedicated peer mentor, he served as an MSSN tutor from his first year through his third year. His commitment to academic leadership culminated in his roles as the Departmental Academic Director for Computer Science (2024/2025) and subsequently the Faculty Academic Director (2025/2026). During his tenure, he successfully drove technical excellence among his peers by organizing numerous tutorial sessions, inter-departmental competitions, and a specialized Agentic AI Workshop."
-  }
-];
-
-// --- UTILS ---
-
-const simulateDelay = (ms = 300) => new Promise((resolve) => setTimeout(resolve, ms));
-
-function createSearchIndex(item) {
-  return Object.values(item)
-    .map(val => (Array.isArray(val) ? val.join(" ") : String(val)))
-    .join(" ")
-    .toLowerCase();
+  return mocksCache;
 }
 
-function paginateData(data, page, limit) {
-  const total = data.length;
-  const totalPages = Math.ceil(total / limit);
-  const offset = (page - 1) * limit;
-  return {
-    data: data.slice(offset, offset + limit),
-    meta: { current_page: page, last_page: totalPages, per_page: limit, total: total }
-  };
-}
-
-function hydrateRelations(items) {
-  return items.map(item => {
-    const tags = (item.relatedDepartmentIds || []).map(deptId => {
-      const dept = DEPARTMENTS.find(d => d.id === deptId);
-      if (dept) {
-        return { slug: dept.slug, name: dept.name, color: dept.color };
-      }
-      return null;
-    }).filter(Boolean);
-
-    return { ...item, tags };
-  });
-}
-
-// --- EXPORTED API ---
-
-export { DEPARTMENTS };
+export { CURRENT_SESSION };
 
 export async function getAllDepartments(options = {}) {
   if (!USE_MOCK) return fetchApi('/departments', options);
 
   await simulateDelay(150);
   if (options.signal?.aborted) throw new DOMException("Aborted", "AbortError");
-  return DEPARTMENTS.map(dept => ({
+  const m = await getMocks();
+  return m.DEPARTMENTS.map(dept => ({
     ...dept,
     description: `The Department of ${dept.name} offers cutting-edge programmes in ${dept.name.toLowerCase()}.`,
     studentCount: Math.floor(Math.random() * 300) + 100,
@@ -286,11 +33,12 @@ export async function getDepartmentBasic(slug, options = {}) {
 
   await simulateDelay(150);
   if (options.signal?.aborted) throw new DOMException("Aborted", "AbortError");
+  const m = await getMocks();
 
-  const department = DEPARTMENTS.find((d) => d.slug === slug);
+  const department = m.DEPARTMENTS.find((d) => d.slug === slug);
   if (!department) return null;
 
-  const staffCount = STAFF_DIRECTORY.filter((s) => s.department_id === department.id).length;
+  const staffCount = m.STAFF_DIRECTORY.filter((s) => s.department_id === department.id).length;
 
   return {
     ...department,
@@ -309,11 +57,12 @@ export async function getDepartmentStaff(slug, options = {}) {
 
   await simulateDelay(2000); // Heavy 2-second delay to test skeleton loader
   if (options.signal?.aborted) throw new DOMException("Aborted", "AbortError");
+  const m = await getMocks();
 
-  const department = DEPARTMENTS.find((d) => d.slug === slug);
+  const department = m.DEPARTMENTS.find((d) => d.slug === slug);
   if (!department) return [];
 
-  return STAFF_DIRECTORY.filter((s) => s.department_id === department.id);
+  return m.STAFF_DIRECTORY.filter((s) => s.department_id === department.id);
 }
 
 /**
@@ -324,11 +73,12 @@ export async function getLecturerBasic(slug, options = {}) {
 
   await simulateDelay(150);
   if (options.signal?.aborted) throw new DOMException("Aborted", "AbortError");
+  const m = await getMocks();
 
-  const lecturer = STAFF_DIRECTORY.find((s) => s.slug === slug);
+  const lecturer = m.STAFF_DIRECTORY.find((s) => s.slug === slug);
   if (!lecturer) return null;
 
-  const department = DEPARTMENTS.find(d => d.id === lecturer.department_id);
+  const department = m.DEPARTMENTS.find(d => d.id === lecturer.department_id);
 
   return {
     id: lecturer.id,
@@ -350,8 +100,9 @@ export async function getLecturerDetails(slug, options = {}) {
 
   await simulateDelay(2000);
   if (options.signal?.aborted) throw new DOMException("Aborted", "AbortError");
+  const m = await getMocks();
 
-  const lecturer = STAFF_DIRECTORY.find((s) => s.slug === slug);
+  const lecturer = m.STAFF_DIRECTORY.find((s) => s.slug === slug);
   if (!lecturer) return null;
 
   return {
@@ -370,9 +121,10 @@ export async function getResearchPapers(filters = {}, options = {}) {
 
   await simulateDelay(300);
   if (options.signal?.aborted) throw new DOMException("Aborted", "AbortError");
+  const m = await getMocks();
 
   const { department, year, search, page = 1, limit = 12 } = filters;
-  let filtered = [...MOCK_RESEARCH];
+  let filtered = [...m.MOCK_RESEARCH];
 
   if (department) filtered = filtered.filter(i => i.department === department);
   if (year) filtered = filtered.filter(i => i.year === Number(year));
@@ -392,9 +144,10 @@ export async function getStudentProjects(filters = {}, options = {}) {
 
   await simulateDelay(300);
   if (options.signal?.aborted) throw new DOMException("Aborted", "AbortError");
+  const m = await getMocks();
 
   const { department, year, search, supervisor, page = 1, limit = 12 } = filters;
-  let filtered = [...MOCK_PROJECTS];
+  let filtered = [...m.MOCK_PROJECTS];
 
   if (department) filtered = filtered.filter(i => i.department === department);
   if (year) filtered = filtered.filter(i => i.year === Number(year));
@@ -415,9 +168,10 @@ export async function getNewsAndEvents(filters = {}, options = {}) {
 
   await simulateDelay(300);
   if (options.signal?.aborted) throw new DOMException("Aborted", "AbortError");
+  const m = await getMocks();
 
   const { type, page = 1, limit = 12 } = filters;
-  let filtered = [...MOCK_FEED];
+  let filtered = [...m.MOCK_FEED];
 
   if (type && type !== 'all') {
     filtered = filtered.filter(i => i.type === type);
@@ -426,7 +180,7 @@ export async function getNewsAndEvents(filters = {}, options = {}) {
   // Sort by publish date descending
   filtered.sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
 
-  const hydrated = hydrateRelations(filtered);
+  const hydrated = hydrateRelations(filtered, m.DEPARTMENTS);
   return paginateData(hydrated, Number(page), Number(limit));
 }
 
@@ -435,27 +189,42 @@ export async function getHomeDashboard(options = {}) {
 
   await simulateDelay(200);
   if (options.signal?.aborted) throw new DOMException("Aborted", "AbortError");
+  const m = await getMocks();
 
   // Get top 3 latest news/events
-  const sortedFeed = [...MOCK_FEED].sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
-  const topFeed = hydrateRelations(sortedFeed.slice(0, 3));
+  const sortedFeed = [...m.MOCK_FEED].sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
+  const topFeed = hydrateRelations(sortedFeed.slice(0, 3), m.DEPARTMENTS);
 
-  // Get top 2 projects (strip heavy fields like abstract for payload optimization)
-  const topProjects = MOCK_PROJECTS.slice(0, 2).map(p => ({
+  // Get top 3 projects
+  const topProjects = [...m.MOCK_PROJECTS].reverse().slice(0, 3).map(p => ({
     id: p.id,
     title: p.title,
     student: p.student,
     department: p.department,
-    year: p.year
+    year: p.year,
+    abstract: p.abstract,
+    matricNo: p.matricNo,
+    supervisor: p.supervisor
   }));
 
   // Get current FOCITSA President
   const leaders = await getStudentLeaders({ branch: "executive" }, options);
   const currentPresident = leaders.find(l => l.role.toLowerCase() === "president");
 
-  // Get Best Graduating Student
-  const roh = await getRollOfHonour({ level: "faculty" }, options);
-  const bestGraduatingStudent = roh.find(r => r.award === "Best Graduating Student");
+  // Get Best Graduating Students (Faculty + Departments)
+  const allRoh = await getRollOfHonour({}, options);
+  const hallOfFameWithDupes = allRoh.filter(r => r.award === "Best Graduating Student");
+  
+  // Deduplicate by matricNo (prioritizing faculty level)
+  const hallOfFame = [];
+  hallOfFameWithDupes.forEach(bgs => {
+    const existingIndex = hallOfFame.findIndex(e => e.matricNo === bgs.matricNo);
+    if (existingIndex === -1) {
+      hallOfFame.push(bgs);
+    } else if (bgs.level === 'faculty') {
+      hallOfFame[existingIndex] = bgs;
+    }
+  });
 
   // Mock Analytics Data (Simulating response from Plausible/Umami API via our BFF)
   // We simulate a 10% chance of the 3rd-party vendor failing or rate-limiting us.
@@ -470,13 +239,13 @@ export async function getHomeDashboard(options = {}) {
     latestFeed: topFeed,
     featuredProjects: topProjects,
     currentPresident,
-    bestGraduatingStudent,
+    hallOfFame,
     visitorStats,
     facultyMetrics: {
       students: 1524,
-      departments: DEPARTMENTS.length,
-      labs: MOCK_LABS.length,
-      staff: STAFF_DIRECTORY.length,
+      departments: m.DEPARTMENTS.length,
+      labs: m.MOCK_LABS.length,
+      staff: m.STAFF_DIRECTORY.length,
       researchPapers: 54
     }
   };
@@ -487,8 +256,9 @@ export async function getFacultyLabs(options = {}) {
 
   await simulateDelay(150);
   if (options.signal?.aborted) throw new DOMException("Aborted", "AbortError");
+  const m = await getMocks();
 
-  return MOCK_LABS;
+  return m.MOCK_LABS;
 }
 
 /**
@@ -536,18 +306,19 @@ export async function getStudentLeaders(filters = {}, options = {}) {
 
   await simulateDelay(200);
   if (options.signal?.aborted) throw new DOMException("Aborted", "AbortError");
+  const m = await getMocks();
 
   const session = filters.session || CURRENT_SESSION;
   const branch = filters.branch; // 'executive' or 'legislative'
 
-  let filtered = MOCK_STUDENT_LEADERS.filter(l => l.academicSession === session);
+  let filtered = m.MOCK_STUDENT_LEADERS.filter(l => l.academicSession === session);
   if (branch) {
     filtered = filtered.filter(l => l.branch === branch);
   }
 
   // Hydrate department info for badge display
   return filtered.map(l => {
-    const dept = DEPARTMENTS.find(d => d.id === l.departmentId);
+    const dept = m.DEPARTMENTS.find(d => d.id === l.departmentId);
     return {
       ...l,
       department: dept ? { name: dept.name, slug: dept.slug, color: dept.color } : null
@@ -563,10 +334,11 @@ export async function getRollOfHonour(filters = {}, options = {}) {
 
   await simulateDelay(200);
   if (options.signal?.aborted) throw new DOMException("Aborted", "AbortError");
+  const m = await getMocks();
 
   const { level, departmentId } = filters;
 
-  let filtered = [...MOCK_ROLL_OF_HONOUR];
+  let filtered = [...m.MOCK_ROLL_OF_HONOUR];
   if (level) {
     filtered = filtered.filter(roh => roh.level === level);
   }
@@ -575,7 +347,7 @@ export async function getRollOfHonour(filters = {}, options = {}) {
   }
 
   return filtered.map(roh => {
-    const dept = DEPARTMENTS.find(d => d.id === roh.departmentId);
+    const dept = m.DEPARTMENTS.find(d => d.id === roh.departmentId);
     return {
       ...roh,
       department: dept ? { name: dept.name, slug: dept.slug, color: dept.color } : null

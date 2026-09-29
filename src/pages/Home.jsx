@@ -13,11 +13,13 @@ import {
   Calendar,
   MousePointerClick,
   AlertCircle,
-  X
+  X,
+  Award
 } from "lucide-react";
 import { getHomeDashboard } from "../services/api";
 import { ProfileCard } from "../components/ui/ProfileCard";
 import { AnimatedCounter } from "../components/ui/AnimatedCounter";
+import staticContent from "../data/staticContent.json";
 
 // --- SEO META ---
 export const meta = () => {
@@ -40,7 +42,7 @@ export default function Home() {
     latestFeed, 
     featuredProjects, 
     currentPresident,
-    bestGraduatingStudent,
+    hallOfFame,
     facultyMetrics,
     visitorStats
   } = useLoaderData();
@@ -49,8 +51,9 @@ export default function Home() {
   const [animateFacultyStats, setAnimateFacultyStats] = useState(false);
   const [animateVisitorStats, setAnimateVisitorStats] = useState(false);
   
-  // BGS Modal State
-  const [isBGSModalOpen, setIsBGSModalOpen] = useState(false);
+  // Modal States
+  const [selectedBGS, setSelectedBGS] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
   
   const facultyStatsRef = useRef(null);
   const visitorStatsRef = useRef(null);
@@ -176,6 +179,49 @@ export default function Home() {
         </div>
       </section>
 
+      {/* DEAN'S WELCOME SECTION */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+            <div className="w-full lg:w-1/3 flex justify-center">
+              <div className="relative">
+                <div className="absolute inset-0 bg-[#FFB81C] rounded-2xl transform translate-x-4 translate-y-4"></div>
+                <img 
+                  src={staticContent.about.leadership.dean.photo} 
+                  alt={staticContent.about.leadership.dean.name} 
+                  className="relative z-10 w-64 h-80 lg:w-full lg:h-96 object-cover rounded-2xl border-4 border-white shadow-xl"
+                />
+              </div>
+            </div>
+            <div className="w-full lg:w-2/3">
+              <div className="inline-flex items-center space-x-2 mb-4">
+                <span className="h-px w-8 bg-indigo-600"></span>
+                <span className="text-indigo-600 font-bold uppercase tracking-wider text-sm">Welcome Address</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2 font-heading leading-tight">
+                {staticContent.about.leadership.dean.name}
+              </h2>
+              <p className="text-xl text-indigo-700 font-medium mb-6">
+                {staticContent.about.leadership.dean.title}
+              </p>
+              <div className="prose prose-lg text-slate-600 mb-8">
+                <p className="leading-relaxed">
+                  {staticContent.about.leadership.dean.bio}
+                </p>
+              </div>
+              <a 
+                href="https://uniosun.edu.ng/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-6 py-3 border border-indigo-600 text-indigo-600 font-bold rounded-lg hover:bg-indigo-50 hover:-translate-y-1 transition-all duration-300"
+              >
+                Read Official Profile <ArrowRight className="ml-2 h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* BENTO GRID QUICK LINKS */}
       <section id="bento-grid" className="py-24 bg-[#F8FAFC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -293,8 +339,12 @@ export default function Home() {
                 </div>
                 <div className="space-y-4">
                   {featuredProjects.map(project => (
-                    <div key={project.id} className="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-indigo-300 transition-colors">
-                      <h3 className="font-bold text-slate-900 mb-1 leading-tight">{project.title}</h3>
+                    <div 
+                      key={project.id} 
+                      onClick={() => setSelectedProject(project)}
+                      className="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-indigo-300 transition-colors cursor-pointer group"
+                    >
+                      <h3 className="font-bold text-slate-900 mb-1 leading-tight group-hover:text-indigo-700 transition-colors">{project.title}</h3>
                       <p className="text-sm text-slate-500 mb-3">By {project.student} • {project.year}</p>
                       <span className="inline-block bg-slate-100 text-slate-700 text-xs font-semibold px-2 py-1 rounded">
                         {project.department.replace('-', ' ').toUpperCase()}
@@ -307,114 +357,194 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Hall of Fame Spotlight */}
-              <div>
-                <div className="flex items-center justify-between mb-6 pb-2 border-b-2 border-slate-200">
-                  <h2 className="text-2xl font-bold text-slate-900 font-heading">Hall of Fame</h2>
-                </div>
-                {bestGraduatingStudent && (
-                  <>
-                    <ProfileCard 
-                      name={bestGraduatingStudent.name}
-                      subtitle={`${bestGraduatingStudent.award} (${bestGraduatingStudent.year})`}
-                      image={bestGraduatingStudent.photo}
-                      imagePosition="object-cover object-top"
-                      badge={bestGraduatingStudent.department}
-                      variant="student-frame"
-                    >
-                      <div className="mt-2 text-sm text-slate-600 space-y-3">
-                        <p><span className="font-semibold text-slate-900">CGPA:</span> {bestGraduatingStudent.cgpa}</p>
-                        <p><span className="font-semibold text-slate-900">Matric No:</span> {bestGraduatingStudent.matricNo}</p>
-                        {bestGraduatingStudent.bio && (
-                          <button 
-                            onClick={() => setIsBGSModalOpen(true)}
-                            className="w-full inline-flex items-center justify-center px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-bold hover:bg-indigo-100 transition-colors"
-                          >
-                            Read about the BGS
-                          </button>
-                        )}
-                      </div>
-                    </ProfileCard>
 
-                    {/* BGS Modal */}
-                    {isBGSModalOpen && (
-                      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 pt-16 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-                        <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 mt-8 sm:mt-0">
-                          <div className="flex items-center justify-between p-6 border-b border-slate-100">
-                            <h3 className="text-xl font-bold font-heading text-slate-900">About the BGS</h3>
-                            <button 
-                              onClick={() => setIsBGSModalOpen(false)}
-                              className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
-                            >
-                              <X size={20} />
-                            </button>
-                          </div>
-                          <div className="p-6 overflow-y-auto max-h-[60vh]">
-                            <div className="flex flex-col sm:flex-row items-center gap-6 mb-6">
-                              <img 
-                                src={bestGraduatingStudent.photo} 
-                                alt={bestGraduatingStudent.name} 
-                                className="w-24 h-24 rounded-full object-cover object-top border-4 border-indigo-100 shadow-sm"
-                              />
-                              <div className="text-center sm:text-left">
-                                <h4 className="text-lg font-bold text-slate-900 mb-1">{bestGraduatingStudent.name}</h4>
-                                <p className="text-indigo-600 font-medium text-sm">{bestGraduatingStudent.award}</p>
-                                <div className="flex flex-wrap gap-2 justify-center sm:justify-start mt-2">
-                                  <span className="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded">CGPA: {bestGraduatingStudent.cgpa}</span>
-                                  <span className="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded">{bestGraduatingStudent.department?.shortName || "CS"}</span>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="prose prose-slate prose-sm text-slate-600">
-                              <p className="leading-relaxed text-justify">{bestGraduatingStudent.bio}</p>
-                            </div>
-                          </div>
-                          <div className="p-4 bg-slate-50 border-t border-slate-100 text-right">
-                            <button 
-                              onClick={() => setIsBGSModalOpen(false)}
-                              className="px-6 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
-                            >
-                              Close
-                            </button>
-                          </div>
+
+              {/* Project Modal */}
+              {selectedProject && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 pt-16 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+                  <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 mt-8 sm:mt-0">
+                    <div className="flex items-center justify-between p-6 border-b border-slate-100">
+                      <h3 className="text-xl font-bold font-heading text-slate-900">Project Details</h3>
+                      <button 
+                        onClick={() => setSelectedProject(null)}
+                        className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+                      >
+                        <X size={20} />
+                      </button>
+                    </div>
+                    <div className="p-6 overflow-y-auto max-h-[60vh]">
+                      <div className="mb-4">
+                        <h4 className="text-xl font-bold text-slate-900 mb-2">{selectedProject.title}</h4>
+                        <p className="text-indigo-600 font-medium text-sm">By {selectedProject.student}</p>
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          <span className="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded">Year: {selectedProject.year}</span>
+                          <span className="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded">Matric No: {selectedProject.matricNo}</span>
+                          <span className="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs font-semibold rounded">{selectedProject.department.replace('-', ' ').toUpperCase()}</span>
                         </div>
                       </div>
-                    )}
-                  </>
-                )}
-              </div>
-
-              {/* Leadership Spotlight */}
-              <div>
-                <div className="flex items-center justify-between mb-6 pb-2 border-b-2 border-slate-200">
-                  <h2 className="text-2xl font-bold text-slate-900 font-heading">Student Union</h2>
-                </div>
-                {currentPresident && (
-                  <ProfileCard 
-                    name={currentPresident.name}
-                    subtitle={`FOCITSA ${currentPresident.role}`}
-                    image={currentPresident.photo}
-                    badge={currentPresident.department}
-                    variant="student-frame"
-                  >
-                    <div className="mt-4 flex flex-col gap-2">
-                      <Link to="/focitsa" className="inline-flex justify-center w-full px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors">
-                        View Union Portal
-                      </Link>
-                      <Link to="/student-affairs" className="inline-flex justify-center w-full px-4 py-2 bg-[#FFB81C] text-[#070c2e] rounded-md text-sm font-bold hover:bg-amber-400 transition-colors">
-                        Student Affairs Dashboard
-                      </Link>
+                      <div className="prose prose-slate prose-sm text-slate-600 mt-6">
+                        <h5 className="text-sm font-bold text-slate-900 mb-2 uppercase tracking-wide">Abstract</h5>
+                        <p className="leading-relaxed text-justify">{selectedProject.abstract}</p>
+                      </div>
+                      {selectedProject.supervisor && (
+                        <div className="mt-6 pt-4 border-t border-slate-100">
+                          <p className="text-sm text-slate-500"><span className="font-semibold text-slate-700">Supervisor:</span> {selectedProject.supervisor}</p>
+                        </div>
+                      )}
                     </div>
-                  </ProfileCard>
-                )}
-              </div>
+                    <div className="p-4 bg-slate-50 border-t border-slate-100 text-right">
+                      <button 
+                        onClick={() => setSelectedProject(null)}
+                        className="px-6 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+
 
             </div>
             
           </div>
         </div>
       </section>
+
+      {/* STUDENT UNION SECTION */}
+      <section className="py-24 bg-slate-50 border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-center gap-16">
+            <div className="lg:w-1/2">
+              <div className="inline-flex items-center space-x-2 mb-4">
+                <Users className="h-5 w-5 text-indigo-600" />
+                <span className="text-indigo-600 font-bold uppercase tracking-wider text-sm">FOCITSA</span>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-extrabold font-heading text-slate-900 tracking-tight mb-6">
+                Student Union Leadership
+              </h2>
+              <p className="text-slate-600 text-lg leading-relaxed mb-8">
+                The Faculty of Computing and Information Technology Students Association (FOCITSA) is the vibrant student body dedicated to fostering academic excellence, innovation, and unity among students. Led by passionate individuals, the union organizes tech summits, hackathons, and social events that shape the campus experience.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/focitsa" className="inline-flex justify-center px-8 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition-colors shadow-sm">
+                  View Union Portal
+                </Link>
+                <Link to="/student-affairs" className="inline-flex justify-center px-8 py-3 bg-white text-slate-900 border border-slate-200 rounded-lg font-bold hover:bg-slate-50 hover:border-slate-300 transition-colors shadow-sm">
+                  Student Affairs
+                </Link>
+              </div>
+            </div>
+            
+            <div className="lg:w-1/2 flex justify-center lg:justify-end">
+              {currentPresident && (
+                <div className="w-full max-w-sm">
+                  <ProfileCard 
+                    name={currentPresident.name}
+                    subtitle={`FOCITSA ${currentPresident.role}`}
+                    image={currentPresident.photo}
+                    badge={currentPresident.department}
+                    variant="student-frame"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
       
+      {/* HALL OF FAME SECTION */}
+      <section className="py-24 bg-white border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-16 text-center max-w-3xl mx-auto flex flex-col gap-6 items-center">
+            <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center">
+              <Award size={32} />
+            </div>
+            <h2 className="text-3xl md:text-5xl font-extrabold font-heading text-slate-900 tracking-tight">
+              Hall of Fame
+            </h2>
+            <p className="text-slate-600 leading-[1.7] text-lg">
+              Welcome to the Hall of Fame. We are extremely proud to showcase the brilliant minds and amazing people who have redefined the technology landscape of Osun State University. Meet our Best Graduating Students!
+            </p>
+          </div>
+
+          {hallOfFame && hallOfFame.length > 0 && (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-center">
+              {hallOfFame.map(bgs => (
+                <ProfileCard 
+                  key={bgs.id}
+                  name={bgs.name}
+                  subtitle={bgs.level === 'faculty' ? `Overall Best Graduating Student (${bgs.year})` : `Best Graduating Student, ${bgs.department?.shortName || bgs.department?.name || 'Department'} (${bgs.year})`}
+                  image={bgs.photo}
+                  imagePosition="object-cover object-top"
+                  badge={bgs.department}
+                  variant={bgs.level === "faculty" ? "student-frame" : "default"}
+                >
+                  <div className="text-sm text-slate-600 space-y-2 mt-2">
+                    <p><span className="font-semibold text-slate-900">CGPA:</span> <span className="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">{bgs.cgpa}</span></p>
+                    <p><span className="font-semibold text-slate-900">Matric No:</span> {bgs.matricNo}</p>
+                    {bgs.bio && (
+                      <button 
+                        onClick={() => setSelectedBGS(bgs)}
+                        className="w-full mt-3 inline-flex items-center justify-center px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-bold hover:bg-indigo-100 transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                  </div>
+                </ProfileCard>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* BGS Modal */}
+        {selectedBGS && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 pt-16 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 mt-8 sm:mt-0">
+              <div className="flex items-center justify-between p-6 border-b border-slate-100">
+                <h3 className="text-xl font-bold font-heading text-slate-900">About the BGS</h3>
+                <button 
+                  onClick={() => setSelectedBGS(null)}
+                  className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="p-6 overflow-y-auto max-h-[60vh]">
+                <div className="flex flex-col sm:flex-row items-center gap-6 mb-6">
+                  <img 
+                    src={selectedBGS.photo || "/default-avatar.jpg"} 
+                    alt={selectedBGS.name} 
+                    className="w-24 h-24 rounded-full object-cover object-top border-4 border-indigo-100 shadow-sm"
+                  />
+                  <div className="text-center sm:text-left">
+                    <h4 className="text-lg font-bold text-slate-900 mb-1">{selectedBGS.name}</h4>
+                    <p className="text-indigo-600 font-medium text-sm">{selectedBGS.award}</p>
+                    <div className="flex flex-wrap gap-2 justify-center sm:justify-start mt-2">
+                      <span className="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded">CGPA: {selectedBGS.cgpa}</span>
+                      <span className="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded">{selectedBGS.department?.shortName || selectedBGS.department?.name || "Department"}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="prose prose-slate prose-sm text-slate-600">
+                  <p className="leading-relaxed text-justify whitespace-pre-line">{selectedBGS.bio}</p>
+                </div>
+              </div>
+              <div className="p-4 bg-slate-50 border-t border-slate-100 text-right">
+                <button 
+                  onClick={() => setSelectedBGS(null)}
+                  className="px-6 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
+
       {/* MOCK VISITOR STATS (Plausible/Umami UI Integration) */}
       {/* Defensive Implementation: Section gracefully collapses if 3rd-party stats fail */}
       <section id="analytics-dashboard" className="bg-[#040617] text-slate-300 py-16 border-t border-indigo-900/30 relative overflow-hidden">

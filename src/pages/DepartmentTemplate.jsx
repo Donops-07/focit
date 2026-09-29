@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { useLoaderData, Await, Link } from "react-router-dom";
 import { getDepartmentBasic, getDepartmentStaff, getRollOfHonour } from "../services/api";
-import { ChevronRight, Users, BookOpen, FlaskConical, Award } from "lucide-react";
+import { ChevronRight, Users, BookOpen, FlaskConical, Award, X } from "lucide-react";
 import { ProfileCard } from "../components/ui/ProfileCard";
 import { cn } from "../lib/utils";
 
@@ -207,12 +207,14 @@ function StaffGridSkeleton() {
 }
 
 function DepartmentRollOfHonour({ rollOfHonour }) {
+  const [selectedAlumnus, setSelectedAlumnus] = React.useState(null);
+
   if (!rollOfHonour || rollOfHonour.length === 0) {
     return null;
   }
 
   return (
-    <section className="w-full bg-white border-t border-border py-20 md:py-24">
+    <section className="w-full bg-white border-t border-border py-20 md:py-24 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center max-w-2xl mx-auto flex flex-col gap-6 items-center">
           <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center">
@@ -238,13 +240,62 @@ function DepartmentRollOfHonour({ rollOfHonour }) {
                 <p><span className="font-semibold text-slate-900">Matric No:</span> {alumnus.matricNo}</p>
                 <p><span className="font-semibold text-slate-900">CGPA:</span> {alumnus.cgpa}</p>
                 {alumnus.bio && (
-                  <p className="mt-3 text-justify leading-relaxed line-clamp-6 text-xs text-gray-500">{alumnus.bio}</p>
+                  <button 
+                    onClick={() => setSelectedAlumnus(alumnus)}
+                    className="w-full mt-3 inline-flex items-center justify-center px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-bold hover:bg-indigo-100 transition-colors"
+                  >
+                    Read more
+                  </button>
                 )}
               </div>
             </ProfileCard>
           ))}
         </div>
       </div>
+
+      {/* BGS Modal */}
+      {selectedAlumnus && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 pt-16 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 mt-8 sm:mt-0">
+            <div className="flex items-center justify-between p-6 border-b border-slate-100">
+              <h3 className="text-xl font-bold font-heading text-slate-900">About the BGS</h3>
+              <button 
+                onClick={() => setSelectedAlumnus(null)}
+                className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <div className="p-6 overflow-y-auto max-h-[60vh]">
+              <div className="flex flex-col sm:flex-row items-center gap-6 mb-6">
+                <img 
+                  src={selectedAlumnus.photo || "/default-avatar.jpg"} 
+                  alt={selectedAlumnus.name} 
+                  className="w-24 h-24 rounded-full object-cover object-top border-4 border-indigo-100 shadow-sm"
+                />
+                <div className="text-center sm:text-left">
+                  <h4 className="text-lg font-bold text-slate-900 mb-1">{selectedAlumnus.name}</h4>
+                  <p className="text-indigo-600 font-medium text-sm">{selectedAlumnus.award}</p>
+                  <div className="flex flex-wrap gap-2 justify-center sm:justify-start mt-2">
+                    <span className="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded">CGPA: {selectedAlumnus.cgpa}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="prose prose-slate prose-sm text-slate-600">
+                <p className="leading-relaxed text-justify whitespace-pre-line">{selectedAlumnus.bio}</p>
+              </div>
+            </div>
+            <div className="p-4 bg-slate-50 border-t border-slate-100 text-right">
+              <button 
+                onClick={() => setSelectedAlumnus(null)}
+                className="px-6 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

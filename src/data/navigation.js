@@ -124,7 +124,7 @@ export const FOOTER_LINKS = [
   },
   {
     heading: "Departments",
-    links: DEPARTMENTS.slice(0, 4).map((dept) => ({
+    links: DEPARTMENTS.map((dept) => ({
       label: dept.name,
       path: `/departments/${dept.slug}`,
     })),

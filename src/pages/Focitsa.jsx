@@ -111,7 +111,7 @@ export default function Focitsa() {
 
                 return (
                   <div key={leader.id} className={`${variant === "president" ? "sm:col-span-2 lg:col-span-4 flex justify-center mb-4" : ""}`}>
-                    <div className={`${variant === "president" ? "w-full max-w-sm" : "w-full"}`}>
+                    <div className={`${variant === "president" ? "w-full max-w-sm" : "w-full"} h-full`}>
                       <ProfileCard 
                         name={leader.name}
                         subtitle={leader.role}
@@ -119,6 +119,7 @@ export default function Focitsa() {
                         imagePosition="object-cover object-top"
                         badge={leader.department}
                         variant={variant}
+                        assistant={leader.assistant}
                       />
                     </div>
                   </div>
