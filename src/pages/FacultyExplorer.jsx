@@ -76,10 +76,9 @@ export default function FacultyExplorer() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {departments.map(dept => (
-              <Link 
+              <div 
                 key={dept.id} 
-                to={`/departments/${dept.slug}`}
-                className="group flex flex-col bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg hover:border-indigo-300 transition-all"
+                className="group relative flex flex-col bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg hover:border-indigo-300 transition-all focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className={`p-3 rounded-lg bg-${dept.color}-50 text-${dept.color}-600 group-hover:bg-${dept.color}-100 transition-colors`}>
@@ -90,12 +89,18 @@ export default function FacultyExplorer() {
                   </span>
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-indigo-700 transition-colors">
-                  {dept.name}
+                  <Link 
+                    to={`/departments/${dept.slug}`}
+                    className="focus:outline-none"
+                  >
+                    <span className="absolute inset-0" aria-hidden="true" />
+                    {dept.name}
+                  </Link>
                 </h3>
                 <p className="text-slate-500 text-sm mt-auto">
                   {dept.studentCount} Active Students
                 </p>
-              </Link>
+              </div>
             ))}
           </div>
         </div>
@@ -146,11 +151,11 @@ export default function FacultyExplorer() {
                 <img 
                   src={leadership.photo} 
                   alt={leadership.name} 
-                  className="w-32 h-32 rounded-2xl object-cover shadow-md border-4 border-white"
+                  className="w-32 h-32 rounded-2xl aspect-square object-cover object-center shadow-md border-4 border-white"
                 />
                 <div>
                   <h3 className="text-2xl font-bold text-slate-900 mb-1">{leadership.name}</h3>
-                  <p className="text-indigo-600 font-medium mb-4">{leadership.title}</p>
+                  <p className="text-slate-600 font-medium mb-4">{leadership.title}</p>
                   <p className="text-slate-600 text-sm leading-relaxed">
                     {leadership.bio}
                   </p>

@@ -1,9 +1,11 @@
 import React, { Suspense } from "react";
 import { useLoaderData, Await, Link } from "react-router-dom";
 import { getDepartmentBasic, getDepartmentStaff, getRollOfHonour } from "../services/api";
-import { ChevronRight, Users, BookOpen, FlaskConical, Award, X } from "lucide-react";
+import { ChevronRight, Users, BookOpen, FlaskConical, Award, X, ExternalLink } from "lucide-react";
 import { ProfileCard } from "../components/ui/ProfileCard";
 import { cn } from "../lib/utils";
+
+// No external hero image assets needed; using inline SVG for zero-payload LCP
 
 // ============================================================================
 // LOADER & DEFERRED DATA
@@ -21,6 +23,7 @@ export async function departmentLoader({ params, request }) {
 
   // Do NOT await the slow relational join, pass the promise directly for streaming
   const staffPromise = getDepartmentStaff(params.slug, {
+    limit: 8,
     signal: request.signal,
   });
 
@@ -45,31 +48,65 @@ function DepartmentHero({ department }) {
   return (
     <section 
       key={`hero-${department.slug}`}
-      className="animate-slide-up-fade w-full pt-44 pb-28 md:pt-48 md:pb-32 relative overflow-hidden text-white"
+      className="w-full pt-40 pb-24 md:pt-48 md:pb-32 bg-blue-darker relative overflow-hidden flex flex-col justify-center min-h-[60vh] lg:min-h-[75vh]"
     >
-      {/* Background Image Layer */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url("/focit-main-building.png")' }}
-      ></div>
-      
-      {/* Blue overlay — translucent so the building image shows through */}
-      <div className="absolute inset-0 bg-blue-900/70 mix-blend-multiply"></div>
-      <div className="absolute inset-0 bg-[#0a1142]/60"></div>
-      
-      {/* Inner wrapper: constrained to match navbar/footer alignment */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="flex items-center gap-2 text-sm text-blue-lightest mb-8 opacity-70">
-          <Link to="/departments" className="hover:text-white transition-colors">Departments</Link>
-          <ChevronRight size={14} />
-          <span>{department.shortName}</span>
+      {/* High-Performance CSS Background */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900 via-[#0a1142] to-slate-950"></div>
+      <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#ffffff_1px,_transparent_1px)] [background-size:24px_24px]"></div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center relative">
+          
+          {/* Text Column - Solid White for Guaranteed Visibility */}
+          <div className="lg:col-span-7 flex flex-col gap-6 z-10">
+            <div className="flex items-center gap-2 text-sm text-cyan-400 font-semibold tracking-wide uppercase drop-shadow-md">
+              <Link to="/departments" className="hover:text-cyan-300 transition-colors">Departments</Link>
+              <ChevronRight size={14} className="opacity-70" />
+              <span aria-current="page">{department.shortName}</span>
+            </div>
+            
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-heading text-white tracking-tight leading-[1.1] drop-shadow-lg">
+              Department of <br className="hidden md:block" />
+              <span className="text-blue-50">{department.name}</span>
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-blue-100/90 font-light leading-relaxed max-w-2xl mt-2 drop-shadow-md">
+              {department.vision}
+            </p>
+          </div>
+          
+          {/* Scalable SVG Geometric Graphic (Watermark on Mobile, Grid Accent on Desktop) */}
+          <div className="absolute lg:relative -inset-10 lg:inset-auto z-0 lg:z-10 opacity-15 lg:opacity-100 lg:col-span-5 flex items-center justify-center pointer-events-none lg:pointer-events-auto overflow-hidden lg:overflow-visible">
+            <div className="w-[150%] sm:w-full lg:w-full max-w-2xl mx-auto lg:max-w-none relative group">
+              {/* Ambient Cyan Glow (Desktop only) */}
+              <div className="hidden lg:block absolute inset-0 bg-cyan-500/20 blur-[100px] rounded-full group-hover:bg-cyan-400/30 transition-colors duration-700"></div>
+              
+              <div className="relative aspect-square w-full lg:opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700">
+                <svg viewBox="0 0 400 400" className="w-full h-full text-cyan-400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* Connecting Lines */}
+                  <path d="M100,100 L200,50 L300,150 L100,100 Z" stroke="currentColor" strokeWidth="1" className="opacity-30" />
+                  <path d="M200,50 L350,80 L300,150 Z" stroke="currentColor" strokeWidth="1" className="opacity-30" />
+                  <path d="M100,100 L50,200 L200,250 L300,150" stroke="currentColor" strokeWidth="1" className="opacity-30" />
+                  <path d="M50,200 L150,350 L200,250 Z" stroke="currentColor" strokeWidth="1" className="opacity-30" />
+                  <path d="M200,250 L300,320 L300,150 Z" stroke="currentColor" strokeWidth="1" className="opacity-30" />
+                  <path d="M100,100 L200,250" stroke="currentColor" strokeWidth="1.5" className="opacity-60" />
+                  <path d="M300,150 L200,250" stroke="currentColor" strokeWidth="1.5" className="opacity-60" />
+                  
+                  {/* Glowing Nodes */}
+                  <circle cx="100" cy="100" r="4" fill="currentColor" />
+                  <circle cx="200" cy="50" r="6" className="fill-blue-400" />
+                  <circle cx="300" cy="150" r="5" className="fill-cyan-300" />
+                  <circle cx="50" cy="200" r="4" className="fill-blue-500" />
+                  <circle cx="200" cy="250" r="8" fill="currentColor" className="drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
+                  <circle cx="150" cy="350" r="5" className="fill-blue-400" />
+                  <circle cx="350" cy="80" r="3" className="fill-cyan-500" />
+                  <circle cx="300" cy="320" r="6" className="fill-cyan-300" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          
         </div>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading mb-6">
-          Department of {department.name}
-        </h1>
-        <p className="text-xl md:text-2xl text-blue-lightest max-w-3xl font-light leading-relaxed">
-          {department.vision}
-        </p>
       </div>
     </section>
   );
@@ -93,11 +130,26 @@ function DepartmentOverview({ department }) {
             <h3 className="text-2xl md:text-3xl font-bold font-heading text-blue-dark pt-6">
               Academic Programmes
             </h3>
-            <ul className="list-disc pl-6 flex flex-col gap-3 text-gray-700 leading-[1.7] text-lg">
-              {department.programmes.map((prog, idx) => (
-                <li key={idx}>{prog}</li>
-              ))}
-            </ul>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {department.programmes.map((prog, idx) => {
+                const name = typeof prog === 'string' ? prog : prog.name;
+                const handbookUrl = typeof prog === 'string' ? "#" : prog.handbookUrl;
+                const reqsUrl = typeof prog === 'string' ? "https://admissions.uniosun.edu.ng" : prog.requirementsUrl;
+                return (
+                  <div key={idx} className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col gap-4">
+                    <h4 className="font-bold text-slate-900">{name}</h4>
+                    <div className="flex flex-wrap gap-3 mt-auto">
+                      <a href={handbookUrl} download className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors inline-flex items-center gap-1">
+                        Download Handbook
+                      </a>
+                      <a href={reqsUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors inline-flex items-center gap-1">
+                        Entry Requirements <ExternalLink size={14} />
+                      </a>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
           
           {/* Quick Stats Sidebar */}
@@ -141,27 +193,35 @@ function DepartmentOverview({ department }) {
   );
 }
 
-function StaffGrid({ staff, departmentSlug }) {
-  if (!staff || staff.length === 0) {
-    return (
-      <div className="text-center py-16 bg-surface-alt rounded-2xl border border-border">
-        <p className="text-gray-500 text-lg">No staff members found for this department.</p>
-      </div>
-    );
-  }
+function extractInitials(name) {
+  if (!name || typeof name !== 'string') return "";
+  let clean = name.replace(/\([^)]*\)/g, "");
+  clean = clean.replace(/\b(?:Prof|Dr|Mr|Mrs|Ms|Rt\.\s?Hon|Sen|Comrade|Engr|Arch)\b\.?\s*/gi, "");
+  const tokens = clean.trim().split(/\s+/).filter(Boolean);
+  const first = tokens[0] ? tokens[0].charAt(0).toUpperCase() : "";
+  const second = tokens[1] ? tokens[1].charAt(0).toUpperCase() : "";
+  return first + second;
+}
 
+function StaffCard({ member, departmentSlug }) {
+  const [imgStatus, setImgStatus] = React.useState('loading');
   return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-      {staff.map((member) => (
-        <div
-          key={member.id}
-          className="group flex flex-col bg-surface border border-border rounded-2xl overflow-hidden hover:border-blue-light hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-        >
+        <div className="group flex flex-col bg-surface border border-border rounded-2xl overflow-hidden hover:border-blue-light hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
           <Link to={`/departments/${departmentSlug}/staff/${member.slug}`} className="block relative aspect-square sm:aspect-[4/3] bg-gray-100 overflow-hidden group-hover:bg-blue-50 transition-colors">
-            {/* Fallback avatar block */}
-            <div className="absolute inset-0 flex items-center justify-center bg-blue-lightest/50 text-blue-primary text-5xl font-bold group-hover:scale-110 transition-transform duration-500">
-              {member.name.charAt(0)}
-            </div>
+            {imgStatus !== 'error' && (
+              <img 
+                src={member.profileImageUrl || "/default-avatar.jpg"} 
+                alt={member.name}
+                onLoad={() => setImgStatus('loaded')}
+                onError={() => setImgStatus('error')}
+                className={cn("absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300", imgStatus === 'loaded' ? 'opacity-100' : 'opacity-0')}
+              />
+            )}
+            {imgStatus !== 'loaded' && (
+              <div className="absolute inset-0 flex items-center justify-center bg-blue-lightest/50 text-blue-primary text-5xl font-bold group-hover:scale-110 transition-transform duration-500" aria-hidden="true">
+                {extractInitials(member.name)}
+              </div>
+            )}
           </Link>
           <div className="p-8 flex flex-col flex-1">
             <Link to={`/departments/${departmentSlug}/staff/${member.slug}`}>
@@ -177,13 +237,44 @@ function StaffGrid({ staff, departmentSlug }) {
               href={`https://uniosun.edu.ng/staff/${member.slug}`}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`View official university profile of ${member.name}`}
               className="mt-auto inline-flex items-center justify-center px-4 py-2 bg-blue-50 text-blue-primary rounded-lg text-sm font-bold hover:bg-blue-100 transition-colors"
             >
               See Official Profile
             </a>
           </div>
         </div>
-      ))}
+  );
+}
+
+function StaffGrid({ staffResponse, departmentSlug, fallbackStaffCount }) {
+  // Handle both raw array (mock) or paginated envelope (API)
+  const staffArray = Array.isArray(staffResponse) ? staffResponse : (staffResponse?.data || []);
+  const totalCount = staffResponse?.meta?.totalCount || fallbackStaffCount || staffArray.length;
+
+  if (!staffArray || staffArray.length === 0) {
+    return (
+      <div className="text-center py-16 bg-surface-alt rounded-2xl border border-border">
+        <p className="text-gray-500 text-lg">No staff members found for this department.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-12">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        {staffArray.map((member) => (
+          <StaffCard key={member.id} member={member} departmentSlug={departmentSlug} />
+        ))}
+      </div>
+      <div className="text-center">
+        <Link 
+          to={`/departments/${departmentSlug}/staff`} 
+          className="inline-flex items-center justify-center px-8 py-3 bg-blue-dark text-white rounded-xl font-bold hover:bg-blue-primary transition-colors shadow-md hover:shadow-lg"
+        >
+          View all {totalCount} Faculty Members
+        </Link>
+      </div>
     </div>
   );
 }
@@ -242,6 +333,7 @@ function DepartmentRollOfHonour({ rollOfHonour }) {
                 {alumnus.bio && (
                   <button 
                     onClick={() => setSelectedAlumnus(alumnus)}
+                    aria-label={`Read full biography of ${alumnus.name}`}
                     className="w-full mt-3 inline-flex items-center justify-center px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-bold hover:bg-indigo-100 transition-colors"
                   >
                     Read more
@@ -330,7 +422,7 @@ export default function DepartmentTemplate() {
               resolve={staffPromise}
               errorElement={<div className="text-red-600 text-center py-10 font-bold border border-red-200 bg-red-50 rounded-2xl">Failed to load staff directory.</div>}
             >
-              {(staff) => <StaffGrid staff={staff} departmentSlug={department.slug} />}
+              {(staffResponse) => <StaffGrid staffResponse={staffResponse} departmentSlug={department.slug} fallbackStaffCount={department.staffCount} />}
             </Await>
           </Suspense>
         </div>

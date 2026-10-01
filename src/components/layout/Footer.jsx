@@ -50,17 +50,17 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="site-footer">
+    <footer className="site-footer pb-24 md:pb-12">
       {/* Back to Top */}
       <button
-        className="back-to-top"
+        className="back-to-top !bottom-8 !right-4 z-50 shadow-lg hover:shadow-xl transition-all"
         onClick={scrollToTop}
         aria-label="Scroll to top"
       >
         <ArrowUp size={20} />
       </button>
 
-      <div className="footer__inner">
+      <div className="footer__inner relative z-10">
         {/* Brand Column */}
         <div className="footer__brand">
           <Link to="/" className="footer__logo">
@@ -127,57 +127,109 @@ export default function Footer() {
         {/* Link Columns */}
         {FOOTER_LINKS.map((group) => (
           <div key={group.heading} className="footer__column">
-            <h3 className="footer__column-heading">{group.heading}</h3>
-            <ul className="footer__column-list">
-              {group.links.map((link) => (
-                <li key={link.path}>
-                  <Link to={link.path} className="footer__column-link">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {/* Desktop Semantic Structure (Static Columns) */}
+            <div className="hidden md:block">
+              <h3 className="footer__column-heading">{group.heading}</h3>
+              <ul className="footer__column-list">
+                {group.links.map((link) => (
+                  <li key={link.path}>
+                    <Link to={link.path} className="footer__column-link">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            {/* Mobile Semantic Structure (Interactive Accordion) */}
+            <details className="md:hidden group">
+              <summary className="footer__column-heading cursor-pointer list-none flex items-center justify-between marker:hidden">
+                {group.heading}
+                <svg className="w-4 h-4 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <ul className="footer__column-list pt-2 pb-4">
+                {group.links.map((link) => (
+                  <li key={link.path}>
+                    <Link to={link.path} className="footer__column-link">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </details>
           </div>
         ))}
 
         {/* External Resources Column */}
         <div className="footer__column">
-          <h3 className="footer__column-heading">Resources</h3>
-          <ul className="footer__column-list">
-            <li>
-              <a
-                href="https://uniosun.edu.ng"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer__column-link footer__column-link--external"
-              >
-                UNIOSUN Portal
-                <ExternalLink size={12} />
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://portal.uniosun.edu.ng"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer__column-link footer__column-link--external"
-              >
-                Student Portal
-                <ExternalLink size={12} />
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://uniosun.edu.ng/library/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer__column-link footer__column-link--external"
-              >
-                E-Library
-                <ExternalLink size={12} />
-              </a>
-            </li>
-          </ul>
+          {/* Desktop Static */}
+          <div className="hidden md:block">
+            <h3 className="footer__column-heading">Resources</h3>
+            <ul className="footer__column-list">
+              <li>
+                <a
+                  href="https://uniosun.edu.ng"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer__column-link footer__column-link--external"
+                >
+                  UNIOSUN Portal
+                  <ExternalLink size={12} />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://portal.uniosun.edu.ng"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer__column-link footer__column-link--external"
+                >
+                  Student Portal
+                  <ExternalLink size={12} />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://uniosun.edu.ng/library/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer__column-link footer__column-link--external"
+                >
+                  E-Library
+                  <ExternalLink size={12} />
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Mobile Accordion */}
+          <details className="md:hidden group">
+            <summary className="footer__column-heading cursor-pointer list-none flex items-center justify-between marker:hidden">
+              Resources
+              <svg className="w-4 h-4 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <ul className="footer__column-list pt-2 pb-4">
+              <li>
+                <a href="https://uniosun.edu.ng" target="_blank" rel="noopener noreferrer" className="footer__column-link footer__column-link--external">
+                  UNIOSUN Portal <ExternalLink size={12} />
+                </a>
+              </li>
+              <li>
+                <a href="https://portal.uniosun.edu.ng" target="_blank" rel="noopener noreferrer" className="footer__column-link footer__column-link--external">
+                  Student Portal <ExternalLink size={12} />
+                </a>
+              </li>
+              <li>
+                <a href="https://uniosun.edu.ng/library/" target="_blank" rel="noopener noreferrer" className="footer__column-link footer__column-link--external">
+                  E-Library <ExternalLink size={12} />
+                </a>
+              </li>
+            </ul>
+          </details>
         </div>
       </div>
 

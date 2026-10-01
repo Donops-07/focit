@@ -123,7 +123,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav Links */}
-          <ul className="nav-links">
+          <ul className="hidden lg:flex items-center gap-1 h-full">
             {NAV_LINKS.slice(0, 5).map((item) => (
               <li
                 key={item.label}
@@ -195,7 +195,7 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <button
-            className="mobile-toggle"
+            className="flex lg:hidden items-center justify-center w-10 h-10 rounded-md text-slate-800 hover:bg-slate-100 hover:text-blue-900 transition-colors"
             onClick={() => setIsMobileOpen(!isMobileOpen)}
             aria-label={isMobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMobileOpen}

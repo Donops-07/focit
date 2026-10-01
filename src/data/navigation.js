@@ -71,12 +71,13 @@ export const NAV_LINKS = [
     })),
   },
   {
-    label: "Research",
-    path: "/research",
-  },
-  {
-    label: "Projects",
-    path: "/projects",
+    label: "Academics",
+    path: "#",
+    children: [
+      { label: "Research Repository", path: "/research" },
+      { label: "Student Projects", path: "/projects" },
+      { label: "Admissions", path: "/admissions" },
+    ]
   },
   {
     label: "News & Events",
@@ -93,10 +94,6 @@ export const NAV_LINKS = [
   {
     label: "Alumni",
     path: "/alumni",
-  },
-  {
-    label: "Admissions",
-    path: "/admissions",
   },
 ];
 

@@ -175,7 +175,7 @@ export const MOCK_STUDENT_LEADERS = [
   { id: "ldr-8", name: "Adekunle Sodiq Gbolahan", role: "Public Relations Officer", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/public-relation-officer.jpeg" },
   { id: "ldr-9", name: "Aishat Bukunmi", role: "Academic Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_LIS_ID, photo: "/academic-director.jpeg", assistant: { name: "Ogunshina Opeyemi Alabi", department: "Computer Science", photo: "/academic-director-2.jpeg" } },
   { id: "ldr-10", name: "Akinsola Helen Olajumoke", role: "Welfare Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/welfare-director.jpeg", assistant: { name: "Taofeek Faiqah Moradeyo", department: "Computer Science", photo: "/welfare-director-2.jpeg" } },
-  { id: "ldr-11", name: "Oyegoke Ayanfeoluwa (20.10)", role: "Social Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80", assistant: { name: "Oyekunle Oluwadamilre", department: "Computer Science", photo: "/social-director-2.jpeg" } },
+  { id: "ldr-11", name: "Oyegoke Ayanfeoluwa (20.10)", role: "Social Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/social-director.jpeg", assistant: { name: "Oyekunle Oluwadamilre", department: "Computer Science", photo: "/social-director-2.jpeg" } },
   { id: "ldr-12", name: "Ayomide Balogun", role: "Sport Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_DSC_ID, photo: "/sport-director.jpeg", assistant: { name: "Adeleke Muiz", department: "Computer Science", photo: "/sport-director-2.jpeg" } },
   { id: "ldr-13", name: "Rabiu Adam Akorede", role: "Software Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/software-director.jpeg", assistant: { name: "Musari Oluwasegun Peter", department: "Software Engineering", photo: "/software-director-2.jpeg" } },
   { id: "ldr-3", name: "Rt. Hon. Adeseyitan Emmanuel Ilerioluwa", role: "Speaker", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_SWE_ID, photo: "/faculty-speaker.jpeg" },
@@ -186,7 +186,12 @@ export const MOCK_STUDENT_LEADERS = [
   { id: "ldr-15", name: "Osuntasa Oluwashinaayomi Simon", role: "Chief Whip", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/chip-whip-csc.jpeg" },
   { id: "ldr-16", name: "Lukman Umar Olatunde (Ayoola)", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_INT_ID, photo: "/member-ift.jpeg" },
   { id: "ldr-17", name: "Akinboyewa Ayomide Emmanuel", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_INS_ID, photo: "/member-ins.jpeg" },
-  { id: "ldr-18", name: "Oladejo Ayomide Elijah", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/member-sen.jpeg" }
+  { id: "ldr-18", name: "Oladejo Ayomide Elijah", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_SWE_ID, photo: "/member-sen.jpeg" },
+  { id: "ldr-19", name: "Paul Oluwaseyi Ishola", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_SWE_ID, photo: "/member-sen-2.jpeg" },
+  { id: "ldr-21", name: "Opabiyi Philip Adedotun(Philip Smart)", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_CYB_ID, photo: "/member-cyb.jpeg" },
+  { id: "ldr-22", name: "Owolabi Bashit Ayomide", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_DSC_ID, photo: "/member-data-science.jpeg" },
+  { id: "ldr-23", name: "Bamgbose Olumide Chidiebere", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_DSC_ID, photo: "/member-data-science-2.jpeg" },
+  { id: "ldr-24", name: "Oni Emmanuel Kayode", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_INT_ID, photo: "/member-ift-2.jpeg" }
 ];
 
 export const MOCK_ROLL_OF_HONOUR = [

@@ -1,8 +1,21 @@
-import { useLoaderData, useSearchParams } from "react-router-dom";
-import { Users, BookOpen, CheckCircle2 } from "lucide-react";
+import { useLoaderData, useSearchParams, useNavigation } from "react-router-dom";
+import { Users, BookOpen, CheckCircle2, LifeBuoy, FileText, Loader2 } from "lucide-react";
 import { getStudentLeaders, getRollOfHonour, CURRENT_SESSION } from "../services/api";
 import { ProfileCard } from "../components/ui/ProfileCard";
 import staticContent from "../data/staticContent.json";
+
+// --- SANITIZATION PIPELINE ---
+function extractInitials(name) {
+  if (!name) return "";
+  const cleanName = name
+    .replace(/(?:Prof\.|Dr\.|Mr\.|Mrs\.|Ms\.|Rt\.\s?Hon\.|Sen\.|Comrade)\s+/gi, "")
+    .replace(/\([^)]*\)/g, "")
+    .trim();
+  const tokens = cleanName.split(/\s+/);
+  const first = tokens[0] ? tokens[0].charAt(0).toUpperCase() : "";
+  const second = tokens[1] ? tokens[1].charAt(0).toUpperCase() : "";
+  return first + second;
+}
 
 // --- SEO META ---
 export const meta = () => {
@@ -23,14 +36,36 @@ export async function focitsaLoader({ request }) {
     getStudentLeaders({ session, branch: "legislative" }, { signal: request.signal }),
     getRollOfHonour({ level: "faculty" }, { signal: request.signal })
   ]);
+
+  const mapLeader = (leader) => ({
+    ...leader,
+    initials: extractInitials(leader.name),
+    assistant: leader.assistant ? { ...leader.assistant, initials: extractInitials(leader.assistant.name) } : null
+  });
   
-  return { executives, legislative, session, currentSession: CURRENT_SESSION };
+  return { 
+    executives: executives.map(mapLeader), 
+    legislative: legislative.map(mapLeader), 
+    session, 
+    currentSession: CURRENT_SESSION 
+  };
 }
 
 // --- MAIN PAGE ---
 export default function Focitsa() {
   const { executives, legislative, session, currentSession } = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigation = useNavigation();
+  const isNavigating = navigation.state === "loading" || navigation.state === "submitting";
+
+  const handleCtaClick = (actionName) => {
+    const payload = JSON.stringify({ event: 'union_cta_click', action: actionName, timestamp: Date.now() });
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon('/api/telemetry', payload);
+    } else {
+      fetch('/api/telemetry', { method: 'POST', body: payload, keepalive: true }).catch(() => {});
+    }
+  };
 
   const handleSessionChange = (e) => {
     setSearchParams({ session: e.target.value });
@@ -51,25 +86,28 @@ export default function Focitsa() {
             The Faculty of Computing and Information Technology Student Association representing the interests, welfare, and academic progress of all students.
           </p>
 
-          <div className="flex justify-center items-center space-x-4">
-            <label htmlFor="session-select" className="text-sm font-medium text-slate-700">
-              Academic Session:
-            </label>
-            <select
-              id="session-select"
-              value={session}
-              onChange={handleSessionChange}
-              className="mt-1 block w-48 pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow-sm bg-white"
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
+            <a 
+              href="#executives" 
+              onClick={() => handleCtaClick('contact_welfare_support')}
+              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-full sm:w-auto transition-colors shadow-sm"
             >
-              <option value={currentSession}>{currentSession} (Current)</option>
-              <option value="2025/2026">2025/2026</option>
-              <option value="2024/2025">2024/2025</option>
-            </select>
+              <LifeBuoy className="w-5 h-5 mr-2" />
+              Welfare & Support
+            </a>
+            <a 
+              href="#constitution" 
+              onClick={() => handleCtaClick('view_constitution')}
+              className="inline-flex items-center justify-center px-6 py-3 border border-slate-300 text-base font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-full sm:w-auto transition-colors shadow-sm"
+            >
+              <FileText className="w-5 h-5 mr-2 text-slate-400" />
+              Union Constitution
+            </a>
           </div>
         </div>
 
         {/* ABOUT FOCITSA (CONSTITUTION AIMS) */}
-        <section className="mb-16 bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+        <section id="constitution" className="mb-16 bg-white p-8 rounded-2xl shadow-sm border border-slate-200 scroll-mt-24">
           <div className="flex items-center mb-6">
             <BookOpen className="h-8 w-8 text-indigo-600 mr-3" />
             <h2 className="text-3xl font-bold text-slate-900">About FOCITSA</h2>
@@ -92,47 +130,72 @@ export default function Focitsa() {
 
 
         {/* EXECUTIVES */}
-        <section className="mb-16">
-          <div className="border-b border-slate-200 pb-4 mb-8">
+        <section id="executives" className="mb-16 scroll-mt-24">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 pb-4 mb-8 gap-4">
             <h2 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center">
               Executive Council
               <span className="ml-3 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
                 {executives.length} Members
               </span>
             </h2>
+            <div className="flex items-center bg-slate-50 rounded-lg p-1 border border-slate-200">
+              <label htmlFor="session-select" className="sr-only">Academic Session</label>
+              <select
+                id="session-select"
+                value={session}
+                onChange={handleSessionChange}
+                className="block w-full py-2 pl-3 pr-8 text-sm font-medium text-slate-700 bg-transparent border-transparent focus:ring-0 focus:border-transparent cursor-pointer"
+              >
+                <option value={currentSession}>{currentSession} (Current)</option>
+                <option value="2025/2026">2025/2026</option>
+                <option value="2024/2025">2024/2025</option>
+              </select>
+            </div>
           </div>
 
-          {executives.length > 0 ? (
-            <div className="flex overflow-x-auto pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 snap-x snap-mandatory sm:overflow-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              {executives.map(leader => {
-                let variant = "default";
-                if (leader.role.toLowerCase() === "president") variant = "president";
-                if (leader.role.toLowerCase() === "vice president") variant = "vice-president";
+          <div className="relative min-h-[400px]">
+            {isNavigating && (
+              <div className="absolute inset-0 z-50 flex items-start justify-center pt-12 bg-slate-50/50 backdrop-blur-[2px] rounded-2xl transition-all duration-300">
+                <div className="bg-white px-4 py-2 rounded-full shadow-lg border border-slate-200 flex items-center gap-3">
+                  <Loader2 className="w-5 h-5 text-indigo-600 animate-spin" />
+                  <span className="text-sm font-medium text-slate-700">Updating records...</span>
+                </div>
+              </div>
+            )}
+            
+            {executives.length > 0 ? (
+              <div className={`flex overflow-x-auto pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 snap-x snap-mandatory sm:overflow-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] sm:items-start transition-opacity duration-300 ${isNavigating ? 'opacity-40 pointer-events-none' : 'opacity-100'}`}>
+                {executives.map(leader => {
+                  let variant = "default";
+                  if (leader.role.toLowerCase() === "president") variant = "president";
+                  if (leader.role.toLowerCase() === "vice president") variant = "vice-president";
 
-                return (
-                  <div key={leader.id} className={`w-[85vw] sm:w-auto flex-shrink-0 snap-center sm:snap-align-none ${variant === "president" ? "sm:col-span-2 lg:col-span-3 xl:col-span-4 sm:flex sm:justify-center sm:mb-4" : ""}`}>
-                    <div className={`${variant === "president" ? "w-full sm:max-w-sm" : "w-full"} h-full`}>
-                      <ProfileCard 
-                        name={leader.name}
-                        subtitle={leader.role}
-                        image={leader.photo}
-                        imagePosition="object-cover object-top"
-                        badge={leader.department}
-                        variant={variant}
-                        assistant={leader.assistant}
-                      />
+                  return (
+                    <div key={leader.id} className={`w-[85vw] sm:w-auto flex-shrink-0 snap-center sm:snap-align-none ${variant === "president" ? "sm:col-span-2 lg:col-span-3 xl:col-span-4 sm:flex sm:justify-center sm:mb-4" : ""}`}>
+                      <div className={`${variant === "president" ? "w-full sm:max-w-sm" : "w-full"}`}>
+                        <ProfileCard 
+                          name={leader.name}
+                          subtitle={leader.role}
+                          image={leader.photo}
+                          imagePosition="object-cover object-top"
+                          badge={leader.department}
+                          variant={variant}
+                          assistant={leader.assistant}
+                          initials={leader.initials}
+                        />
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
-              <Users className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-slate-900 mb-1">No Executives Found</h3>
-              <p className="text-slate-500">There are no executive records for the {session} academic session.</p>
-            </div>
-          )}
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
+                <Users className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-slate-900 mb-1">No Executives Found</h3>
+                <p className="text-slate-500">There are no executive records for the {session} academic session.</p>
+              </div>
+            )}
+          </div>
         </section>
 
         {/* LEGISLATIVE */}
@@ -142,25 +205,31 @@ export default function Focitsa() {
             <p className="text-slate-500 mt-2">The parliamentary representatives from all 7 departments.</p>
           </div>
           
-          {legislative.length > 0 ? (
-            <div className="flex overflow-x-auto pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 snap-x snap-mandatory sm:overflow-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              {legislative.map(leader => (
-                <div key={leader.id} className="w-[85vw] sm:w-auto flex-shrink-0 snap-center sm:snap-align-none">
-                  <ProfileCard 
-                    name={leader.name}
-                    subtitle={leader.role}
-                    image={leader.photo}
-                    imagePosition="object-cover object-top"
-                    badge={leader.department}
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12 bg-white rounded-xl border border-slate-200">
-              <p className="text-slate-500">No legislative records found for the {session} session.</p>
-            </div>
-          )}
+          <div className="relative min-h-[400px]">
+            {isNavigating && (
+              <div className="absolute inset-0 z-50 bg-slate-50/50 backdrop-blur-[2px] rounded-2xl transition-all duration-300 pointer-events-none" />
+            )}
+            {legislative.length > 0 ? (
+              <div className={`flex overflow-x-auto pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 snap-x snap-mandatory sm:overflow-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] sm:items-start transition-opacity duration-300 ${isNavigating ? 'opacity-40 pointer-events-none' : 'opacity-100'}`}>
+                {legislative.map(leader => (
+                  <div key={leader.id} className="w-[85vw] sm:w-auto flex-shrink-0 snap-center sm:snap-align-none">
+                    <ProfileCard 
+                      name={leader.name}
+                      subtitle={leader.role}
+                      image={leader.photo}
+                      imagePosition="object-cover object-top"
+                      badge={leader.department}
+                      initials={leader.initials}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 bg-white rounded-xl border border-slate-200">
+                <p className="text-slate-500">No legislative records found for the {session} session.</p>
+              </div>
+            )}
+          </div>
         </section>
 
       </div>

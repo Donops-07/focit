@@ -86,31 +86,44 @@ export default function About() {
               <h3 className="text-2xl font-bold text-slate-900 mb-8 text-center">
                 Faculty Leadership
               </h3>
-              <div className="flex flex-wrap justify-center gap-8">
+              <div className="space-y-8">
                 {about.leadership && Object.values(about.leadership).map((leader, idx) => (
-                  <div key={idx} className="w-full max-w-md">
-                    <ProfileCard
-                      name={leader.name}
-                      subtitle={leader.title}
-                      image={leader.photo}
-                      variant={leader.title.toLowerCase().includes("dean") ? "president" : "default"}
-                    >
+                  <div key={idx} className="w-full bg-white border border-slate-200 rounded-3xl p-8 md:p-12 shadow-sm flex flex-col md:flex-row gap-8 items-start hover:shadow-md transition-shadow">
+                    
+                    {/* Media Column (Constrained width on desktop) */}
+                    <div className="w-full md:w-1/3 lg:w-1/4 flex-shrink-0 relative">
+                      <div className="absolute inset-0 bg-indigo-600 rounded-2xl transform translate-x-2 translate-y-2"></div>
+                      <img 
+                        src={leader.photo} 
+                        alt={leader.name}
+                        className="relative z-10 w-full aspect-square object-cover object-center rounded-2xl shadow-md border-4 border-white bg-slate-100"
+                      />
+                    </div>
+                    
+                    {/* Content Column (Expands to fill remaining space) */}
+                    <div className="w-full md:w-2/3 lg:w-3/4 flex flex-col justify-center">
+                      <h4 className="text-3xl font-bold text-slate-900 mb-1">{leader.name}</h4>
+                      <p className="text-slate-600 font-medium mb-6 text-lg">{leader.title}</p>
+                      
                       {leader.bio && (
-                        <div className="mt-4 text-sm text-slate-600 leading-relaxed text-justify border-t border-slate-100 pt-4">
-                          {leader.bio}
+                        <div className="text-slate-600 leading-relaxed text-justify space-y-4">
+                          <p>{leader.bio}</p>
                         </div>
                       )}
+                      
                       {leader.linkedin && (
                         <a 
                           href={leader.linkedin} 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="mt-4 inline-flex items-center text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors"
+                          className="mt-6 inline-flex items-center px-6 py-3 bg-indigo-50 text-indigo-700 text-sm font-bold rounded-lg hover:bg-indigo-100 transition-colors w-fit group"
                         >
-                          View LinkedIn Profile <span className="ml-1">→</span>
+                          View LinkedIn Profile 
+                          <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                         </a>
                       )}
-                    </ProfileCard>
+                    </div>
+                    
                   </div>
                 ))}
               </div>

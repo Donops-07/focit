@@ -14,7 +14,8 @@ import {
   MousePointerClick,
   AlertCircle,
   X,
-  Award
+  Award,
+  ExternalLink
 } from "lucide-react";
 import { getHomeDashboard } from "../services/api";
 import { ProfileCard } from "../components/ui/ProfileCard";
@@ -85,57 +86,72 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      
-      {/* ANNOUNCEMENTS MARQUEE (UNIOSUN Inspired) */}
-      <div className="bg-indigo-600 text-white py-2 overflow-hidden flex items-center border-b border-indigo-700">
-        <div className="px-4 font-bold text-sm bg-indigo-800 py-1 mr-4 rounded-r-md z-10 shadow-[10px_0_15px_-3px_rgba(79,70,229,1)]">
-          LATEST:
-        </div>
-        <div className="flex whitespace-nowrap animate-[marquee_20s_linear_infinite]">
-          <span className="mx-4 text-sm font-medium">✨ Admissions for 2026/2027 Session now open!</span>
-          <span className="mx-4 text-sm font-medium">🏆 FOCIT wins National Hackathon 2026</span>
-          <span className="mx-4 text-sm font-medium">📅 Tech Innovation Summit: Nov 5-6</span>
-          <span className="mx-4 text-sm font-medium">✨ Admissions for 2026/2027 Session now open!</span>
-        </div>
-      </div>
 
-      {/* HERO SECTION */}
-      <section id="hero-section" className="relative bg-[#070c2e] text-white overflow-hidden">
-        {/* Cyber grid background */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTAgMTBoNDBNMTAgMHY0ME0wIDIwaDQwTTIwIDB2NDBNMCAzMGg0ME0zMCAwdjQwIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wNykiIHN0cm9rZS13aWR0aD0iMSIvPgo8L3N2Zz4=')] opacity-50"></div>
-        <div className="absolute inset-0 overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1600&auto=format&fit=crop"
-            alt="Digital Network Campus"
-            className="w-full h-full object-cover opacity-20 mix-blend-screen"
+      {/* HERO SECTION - Strictly Scoped Component Architecture */}
+      <section id="hero-section" className="relative bg-[#070c2e] min-h-[85vh] flex items-center overflow-hidden">
+        
+        {/* LAYER 0: The Bitmap Payload (Preloaded via document head outside this component) */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/focit-main-building.png" 
+            alt="FOCIT Main Building" 
+            className="w-full h-full object-cover opacity-90"
+            // Important: In a production build, this would be .webp or .avif
+            // and we'd inject <link rel="preload" as="image" href="..." fetchpriority="high"> in the <head>
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#040617] via-[#070c2e]/80 to-transparent"></div>
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-36 flex flex-col items-center text-center">
-          <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 backdrop-blur-md mb-8">
-            <span className="flex h-2 w-2 rounded-full bg-indigo-400 animate-pulse mr-2"></span>
-            <span className="text-xs font-mono font-medium tracking-wider text-indigo-300">SYSTEM.ONLINE // ACADEMIC_HUB</span>
-          </div>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 drop-shadow-lg font-heading">
-            Faculty of Computing <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-teal-300">& Information Technology</span>
-          </h1>
-          <p className="mt-6 text-xl max-w-2xl mx-auto text-slate-300 mb-12 drop-shadow leading-relaxed">
-            Osun State University (UNIOSUN). Empowering the next generation of global tech leaders through innovation, code, and data.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6">
-            <Link
-              to="/explore"
-              className="group inline-flex items-center justify-center px-8 py-4 border border-indigo-400/50 text-base font-bold rounded-lg shadow-[0_0_20px_rgba(79,70,229,0.3)] text-white bg-indigo-600/80 backdrop-blur-md hover:bg-indigo-500 hover:shadow-[0_0_30px_rgba(79,70,229,0.6)] hover:-translate-y-1 transition-all duration-300"
-            >
-              Initialize Exploration
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              to="/admissions"
-              className="inline-flex items-center justify-center px-8 py-4 border border-white/20 text-base font-bold rounded-lg text-white bg-white/5 backdrop-blur-md hover:bg-white/10 hover:border-white/40 hover:-translate-y-1 transition-all duration-300"
-            >
-              Admissions Portal
-            </Link>
+
+        {/* LAYER 1: The Scrim (Mathematical Contrast Floor) */}
+        {/* Uses Tailwind gradient classes to replace the ::before pseudo-element for encapsulation */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#070c2e]/95 via-[#070c2e]/80 to-[#070c2e]/40 pointer-events-none" />
+
+        {/* LAYER 2: The Document Content */}
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20">
+          <div className="w-full md:w-[60%] flex flex-col items-start text-left">
+            
+            {/* Statically rendered, CDN-invalidated Badge */}
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#FFB81C] mb-8 shadow-sm">
+              <span className="flex h-2 w-2 rounded-full bg-black animate-pulse mr-2"></span>
+              <span className="text-xs font-bold tracking-wide text-black uppercase">
+                [New] Fall 2026 Admissions Open
+              </span>
+            </div>
+            
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 text-white font-heading leading-tight drop-shadow-md">
+              Faculty of Computing & Information Technology
+            </h1>
+            
+            <p className="mt-4 text-lg md:text-xl text-slate-200 mb-10 leading-relaxed max-w-2xl drop-shadow">
+              Osun State University (UNIOSUN). Empowering the next generation of global tech leaders through rigorous academia, research, and industry-standard engineering.
+            </p>
+            
+            {/* Intent-Based Routing: Segmenting the Funnel */}
+            <div className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto">
+              
+              {/* Primary Conversion (Internal SPA Routing) */}
+              {/* Solid visual mass ensures zero camouflage against background noise */}
+              <Link
+                to="/admissions"
+                className="group inline-flex items-center justify-center px-8 py-4 bg-[#FFB81C] text-black text-base font-extrabold rounded-lg hover:bg-amber-400 hover:-translate-y-1 transition-all duration-300 shadow-lg"
+              >
+                Apply to Programs
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              
+              {/* Secondary Utility (External Legacy Routing) */}
+              {/* Uses a native <a> tag to prevent React Router from hijacking external history state */}
+              {/* Uses backdrop-filter to mathematically blur background architectural noise */}
+              <a
+                href="https://portal.uniosun.edu.ng"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-8 py-4 bg-white/10 border border-white/30 backdrop-blur-md text-white text-base font-bold rounded-lg hover:bg-white/20 hover:border-white/50 transition-all duration-300 group"
+              >
+                Current Student Portal
+                <ExternalLink className="ml-2 h-5 w-5 opacity-70 group-hover:opacity-100 transition-opacity" />
+              </a>
+              
+            </div>
           </div>
         </div>
       </section>
@@ -237,7 +253,6 @@ export default function Home() {
               <div className="p-4 bg-indigo-50 text-indigo-600 rounded-2xl mb-6 w-fit z-10 border border-indigo-100">
                 <Laptop className="h-8 w-8" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4 z-10">Modern Infrastructure</h3>
               <p className="text-slate-600 mb-8 z-10 max-w-md text-lg">Experience hands-on learning in our 5 specialized laboratories equipped with industry-standard technologies and high-performance computing clusters.</p>
               <Link to="/explore" className="text-indigo-600 font-bold hover:text-indigo-800 flex items-center mt-auto uppercase tracking-wide text-sm z-10 w-fit group/link">
                 View Facilities <ArrowRight className="h-4 w-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
@@ -293,7 +308,7 @@ export default function Home() {
             {/* Latest News (2 columns) */}
             <div className="lg:col-span-2">
               <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-200">
-                <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight font-heading">Event Telemetry</h2>
+                <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight font-heading">Faculty News & Events</h2>
                 <Link to="/news" className="text-indigo-600 font-bold hover:text-indigo-800 flex items-center group/link">
                   View full log <ArrowRight className="h-4 w-4 ml-1 group-hover/link:translate-x-1 transition-transform" />
                 </Link>
@@ -319,7 +334,7 @@ export default function Home() {
                       <h3 className="text-xl font-bold text-slate-900 mb-2 leading-tight group-hover:text-indigo-700 transition-colors">{item.title}</h3>
                       <p className="text-slate-600 text-sm mb-4 line-clamp-2">{item.summary}</p>
                       <Link to="/news" className="text-indigo-600 font-bold text-sm hover:underline mt-auto inline-flex items-center">
-                        Execute read <ChevronRight className="h-4 w-4 ml-1" />
+                        Read Article <ChevronRight className="h-4 w-4 ml-1" />
                       </Link>
                     </div>
                   </div>
@@ -543,65 +558,55 @@ export default function Home() {
         )}
       </section>
 
-      {/* MOCK VISITOR STATS (Plausible/Umami UI Integration) */}
+      {/* LIVE ANALYTICS (Plausible/Umami UI Integration) */}
       {/* Defensive Implementation: Section gracefully collapses if 3rd-party stats fail */}
-      <section id="analytics-dashboard" className="bg-[#040617] text-slate-300 py-16 border-t border-indigo-900/30 relative overflow-hidden">
-        {/* Decorative Grid Lines */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTAgMTBoNDBNMTAgMHY0ME0wIDIwaDQwTTIwIDB2NDBNMCAzMGg0ME0zMCAwdjQwIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiIHN0cm9rZS13aWR0aD0iMSIvPgo8L3N2Zz4=')]"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={visitorStatsRef}>
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center space-x-2 mb-3">
-              <span className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-              </span>
-              <h3 className="text-xs font-mono font-bold tracking-[0.2em] text-emerald-400">LIVE SYSTEM ANALYTICS</h3>
+      {visitorStats && (
+        <section id="analytics-dashboard" className="bg-[#040617] text-slate-300 py-16 border-t border-indigo-900/30 relative overflow-hidden">
+          {/* Decorative Grid Lines */}
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTAgMTBoNDBNMTAgMHY0ME0wIDIwaDQwTTIwIDB2NDBNMCAzMGg0ME0zMCAwdjQwIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiIHN0cm9rZS13aWR0aD0iMSIvPgo8L3N2Zz4=')]"></div>
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={visitorStatsRef}>
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center justify-center space-x-2 mb-3">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                </span>
+                <h3 className="text-xs font-mono font-bold tracking-[0.2em] text-emerald-400">LIVE SYSTEM ANALYTICS</h3>
+              </div>
+              <p className="text-2xl text-white font-heading font-bold">Faculty Traffic Matrix</p>
             </div>
-            <p className="text-2xl text-white font-heading font-bold">Faculty Traffic Matrix</p>
+            
+            <div className="grid grid-cols-3 gap-2 md:gap-6 max-w-4xl mx-auto">
+              <div className="bg-[#0a1142]/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-indigo-500/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] flex flex-col items-center justify-center text-center group hover:border-indigo-400/40 transition-colors">
+                <Eye className="h-6 w-6 md:h-8 md:w-8 text-indigo-400 mb-2 md:mb-4 opacity-70 group-hover:opacity-100 transition-opacity" />
+                <div className="text-xl md:text-4xl font-mono font-bold text-white mb-1 md:mb-2 h-8 md:h-10 flex items-center justify-center">
+                  <AnimatedCounter value={visitorStats.totalPageViews} start={animateVisitorStats} />
+                </div>
+                <div className="text-[10px] md:text-xs font-mono font-medium tracking-widest text-slate-400">TOTAL_VIEWS</div>
+              </div>
+
+              <div className="bg-[#0a1142]/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-teal-500/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] flex flex-col items-center justify-center text-center group hover:border-teal-400/40 transition-colors">
+                <Calendar className="h-6 w-6 md:h-8 md:w-8 text-teal-400 mb-2 md:mb-4 opacity-70 group-hover:opacity-100 transition-opacity" />
+                <div className="text-xl md:text-4xl font-mono font-bold text-white mb-1 md:mb-2 h-8 md:h-10 flex items-center justify-center">
+                  <AnimatedCounter value={visitorStats.monthlyVisitors} start={animateVisitorStats} />
+                </div>
+                <div className="text-[10px] md:text-xs font-mono font-medium tracking-widest text-slate-400">MONTHLY</div>
+              </div>
+
+              <div className="bg-[#0a1142]/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-amber-500/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] flex flex-col items-center justify-center text-center group hover:border-amber-400/40 transition-colors">
+                <MousePointerClick className="h-6 w-6 md:h-8 md:w-8 text-amber-400 mb-2 md:mb-4 opacity-70 group-hover:opacity-100 transition-opacity" />
+                <div className="text-xl md:text-4xl font-mono font-bold text-white mb-1 md:mb-2 h-8 md:h-10 flex items-center justify-center">
+                  <AnimatedCounter value={visitorStats.todaysVisits} start={animateVisitorStats} />
+                </div>
+                <div className="text-[10px] md:text-xs font-mono font-medium tracking-widest text-slate-400">TODAY</div>
+              </div>
+            </div>
+            <div className="text-center mt-8 text-xs text-slate-400 font-medium tracking-wide">
+              Metrics last updated: {new Date(visitorStats.lastUpdated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </div>
           </div>
-          
-          {visitorStats ? (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                <div className="bg-[#0a1142]/80 backdrop-blur-sm rounded-2xl p-8 border border-indigo-500/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] flex flex-col items-center justify-center text-center group hover:border-indigo-400/40 transition-colors">
-                  <Eye className="h-8 w-8 text-indigo-400 mb-4 opacity-70 group-hover:opacity-100 transition-opacity" />
-                  <div className="text-4xl font-mono font-bold text-white mb-2 h-10 flex items-center justify-center">
-                    <AnimatedCounter value={visitorStats.totalPageViews} start={animateVisitorStats} />
-                  </div>
-                  <div className="text-xs font-mono font-medium tracking-widest text-slate-400">TOTAL_PAGE_VIEWS</div>
-                </div>
-
-                <div className="bg-[#0a1142]/80 backdrop-blur-sm rounded-2xl p-8 border border-teal-500/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] flex flex-col items-center justify-center text-center group hover:border-teal-400/40 transition-colors">
-                  <Calendar className="h-8 w-8 text-teal-400 mb-4 opacity-70 group-hover:opacity-100 transition-opacity" />
-                  <div className="text-4xl font-mono font-bold text-white mb-2 h-10 flex items-center justify-center">
-                    <AnimatedCounter value={visitorStats.monthlyVisitors} start={animateVisitorStats} />
-                  </div>
-                  <div className="text-xs font-mono font-medium tracking-widest text-slate-400">MONTHLY_VISITORS</div>
-                </div>
-
-                <div className="bg-[#0a1142]/80 backdrop-blur-sm rounded-2xl p-8 border border-amber-500/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] flex flex-col items-center justify-center text-center group hover:border-amber-400/40 transition-colors">
-                  <MousePointerClick className="h-8 w-8 text-amber-400 mb-4 opacity-70 group-hover:opacity-100 transition-opacity" />
-                  <div className="text-4xl font-mono font-bold text-white mb-2 h-10 flex items-center justify-center">
-                    <AnimatedCounter value={visitorStats.todaysVisits} start={animateVisitorStats} />
-                  </div>
-                  <div className="text-xs font-mono font-medium tracking-widest text-slate-400">TODAYS_VISITS</div>
-                </div>
-              </div>
-              <div className="text-center mt-8 text-xs font-mono text-slate-500">
-                DATA_SOURCE: <span className="text-slate-400">PLAUSIBLE_EDGE</span> | LAST_SYNC: <span className="text-indigo-300">{new Date(visitorStats.lastUpdated).toLocaleDateString()} {new Date(visitorStats.lastUpdated).toLocaleTimeString()}</span>
-              </div>
-            </>
-          ) : (
-            /* Defensive Fallback UI */
-            <div className="max-w-2xl mx-auto bg-[#0a1142]/80 backdrop-blur-sm rounded-2xl p-8 border border-slate-700/50 text-center">
-              <AlertCircle className="h-8 w-8 text-slate-500 mx-auto mb-4 opacity-50" />
-              <p className="text-slate-400 text-sm font-mono">
-                &gt; SYNC_ERROR: Live analytics are currently synchronizing. Please check back later.
-              </p>
-            </div>
-          )}
-        </div>
-      </section>
+        </section>
+      )}
 
     </div>
   );

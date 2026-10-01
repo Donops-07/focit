@@ -291,18 +291,7 @@
 
 /* ── Desktop Nav Links ─────────────────────────────────────────────── */
 
-.nav-links {
-  display: none;
-  align-items: center;
-  gap: 0.15rem;
-  height: 100%;
-}
 
-@media (min-width: 1024px) {
-  .nav-links {
-    display: flex;
-  }
-}
 
 .nav-links__item {
   position: relative;
@@ -415,27 +404,7 @@
 
 /* ── Mobile Menu Toggle ────────────────────────────────────────────── */
 
-.mobile-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-md);
-  color: var(--color-text-primary);
-  transition: all var(--transition-fast);
-}
 
-.mobile-toggle:hover {
-  background-color: var(--color-blue-lightest);
-  color: var(--color-blue-primary);
-}
-
-@media (min-width: 1024px) {
-  .mobile-toggle {
-    display: none;
-  }
-}
 
 /* ── Mobile Overlay ────────────────────────────────────────────────── */
 
