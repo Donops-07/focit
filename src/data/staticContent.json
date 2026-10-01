@@ -9,10 +9,12 @@
     "mission": "To create a unique institution committed to the pursuit of academic innovation, skill-based training, and a tradition of excellence in teaching, research, and community service.",
     "leadership": {
       "dean": {
-        "name": "Prof. S. O. Ogundokun",
-        "title": "Dean, Faculty of Computing & Information Technology",
-        "bio": "Professor S.O. Ogundokun brings over two decades of academic and industry experience to the Faculty. He holds a Ph.D. in Computer Science and has published extensively in international journals on Artificial Intelligence and Information Systems. Under his leadership, the Faculty is driving a digital transformation agenda to equip students with 21st-century tech skills.",
-        "photo": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop"
+        "name": "Prof. Caleb (Olufisoye) AKANBI",
+        "title": "Professor of Computer Science & Pioneer Dean, Faculty of Computing and Information Technology",
+        "welcomeAddress": "Professor Caleb (Olufisoye) AKANBI brings over two decades of academic and industry experience to the Faculty. He holds a Ph.D. in Computer Science and has published extensively in international journals on Artificial Intelligence and Information Systems. Under his leadership, the Faculty is driving a digital transformation agenda to equip students with 21st-century tech skills.",
+        "bio": "I am a dedicated and accomplished professional with a wealth of experience in academia and leadership roles within the field of Information and Communication Technology (ICT). As a seasoned academic and administrator, I have served in various capacities at Osun State University, Osogbo, contributing significantly to the institution's growth and development. My expertise spans software engineering, e-learning management systems, collaborative algorithms, and knowledge-based ontology models, backed by a strong publication record and a proven track record of supervising postgraduate and undergraduate students.",
+        "linkedin": "https://www.linkedin.com/in/calebolufisoyeakanbi/",
+        "photo": "/focit-dean.jfif"
       }
     }
   },

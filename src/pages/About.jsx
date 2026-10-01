@@ -86,15 +86,32 @@ export default function About() {
               <h3 className="text-2xl font-bold text-slate-900 mb-8 text-center">
                 Faculty Leadership
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+              <div className="flex flex-wrap justify-center gap-8">
                 {about.leadership && Object.values(about.leadership).map((leader, idx) => (
-                  <ProfileCard
-                    key={idx}
-                    name={leader.name}
-                    subtitle={leader.title}
-                    image={leader.photo}
-                    variant={leader.title.toLowerCase().includes("dean") ? "dean-frame" : "default"}
-                  />
+                  <div key={idx} className="w-full max-w-md">
+                    <ProfileCard
+                      name={leader.name}
+                      subtitle={leader.title}
+                      image={leader.photo}
+                      variant={leader.title.toLowerCase().includes("dean") ? "president" : "default"}
+                    >
+                      {leader.bio && (
+                        <div className="mt-4 text-sm text-slate-600 leading-relaxed text-justify border-t border-slate-100 pt-4">
+                          {leader.bio}
+                        </div>
+                      )}
+                      {leader.linkedin && (
+                        <a 
+                          href={leader.linkedin} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="mt-4 inline-flex items-center text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors"
+                        >
+                          View LinkedIn Profile <span className="ml-1">→</span>
+                        </a>
+                      )}
+                    </ProfileCard>
+                  </div>
                 ))}
               </div>
             </section>

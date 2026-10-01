@@ -206,17 +206,15 @@ export default function Home() {
               </p>
               <div className="prose prose-lg text-slate-600 mb-8">
                 <p className="leading-relaxed">
-                  {staticContent.about.leadership.dean.bio}
+                  {staticContent.about.leadership.dean.welcomeAddress}
                 </p>
               </div>
-              <a 
-                href="https://uniosun.edu.ng/" 
-                target="_blank" 
-                rel="noopener noreferrer"
+              <Link 
+                to="/about"
                 className="inline-flex items-center px-6 py-3 border border-indigo-600 text-indigo-600 font-bold rounded-lg hover:bg-indigo-50 hover:-translate-y-1 transition-all duration-300"
               >
-                Read Official Profile <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
+                Read More About The Dean <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
             </div>
           </div>
         </div>

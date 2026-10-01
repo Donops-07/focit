@@ -103,15 +103,15 @@ export default function Focitsa() {
           </div>
 
           {executives.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div className="flex overflow-x-auto pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 snap-x snap-mandatory sm:overflow-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {executives.map(leader => {
                 let variant = "default";
                 if (leader.role.toLowerCase() === "president") variant = "president";
                 if (leader.role.toLowerCase() === "vice president") variant = "vice-president";
 
                 return (
-                  <div key={leader.id} className={`${variant === "president" ? "sm:col-span-2 lg:col-span-4 flex justify-center mb-4" : ""}`}>
-                    <div className={`${variant === "president" ? "w-full max-w-sm" : "w-full"} h-full`}>
+                  <div key={leader.id} className={`w-[85vw] sm:w-auto flex-shrink-0 snap-center sm:snap-align-none ${variant === "president" ? "sm:col-span-2 lg:col-span-3 xl:col-span-4 sm:flex sm:justify-center sm:mb-4" : ""}`}>
+                    <div className={`${variant === "president" ? "w-full sm:max-w-sm" : "w-full"} h-full`}>
                       <ProfileCard 
                         name={leader.name}
                         subtitle={leader.role}
@@ -143,16 +143,17 @@ export default function Focitsa() {
           </div>
           
           {legislative.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="flex overflow-x-auto pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 snap-x snap-mandatory sm:overflow-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {legislative.map(leader => (
-                <ProfileCard 
-                  key={leader.id}
-                  name={leader.name}
-                  subtitle={leader.role}
-                  image={leader.photo}
-                  imagePosition="object-cover object-top"
-                  badge={leader.department}
-                />
+                <div key={leader.id} className="w-[85vw] sm:w-auto flex-shrink-0 snap-center sm:snap-align-none">
+                  <ProfileCard 
+                    name={leader.name}
+                    subtitle={leader.role}
+                    image={leader.photo}
+                    imagePosition="object-cover object-top"
+                    badge={leader.department}
+                  />
+                </div>
               ))}
             </div>
           ) : (

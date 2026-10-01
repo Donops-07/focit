@@ -171,17 +171,22 @@ export const MOCK_STUDENT_LEADERS = [
   { id: "ldr-1", name: "Akingbehin Oluwadarasimi", role: "President", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/faculty-president.jpeg" },
   { id: "ldr-2", name: "Ayodeji Ayofe", role: "Vice President", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_SWE_ID, photo: "/vice-president.jpeg" },
   { id: "ldr-6", name: "Adeniji Daniel", role: "General Secretary", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/general-secretary.jpeg", assistant: { name: "Okechukwu Eloghosa Praise", department: "Cybersecurity", photo: "/general-secretary-2.jpeg" } },
-  { id: "ldr-7", name: "Kemi Ojo", role: "Financial Secretary", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_INS_ID, photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" },
+  { id: "ldr-7", name: "Kemi Ojo", role: "Financial Secretary", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_INS_ID, photo: "/financial-secretary.jpeg" },
   { id: "ldr-8", name: "Adekunle Sodiq Gbolahan", role: "Public Relations Officer", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/public-relation-officer.jpeg" },
   { id: "ldr-9", name: "Aishat Bukunmi", role: "Academic Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_LIS_ID, photo: "/academic-director.jpeg", assistant: { name: "Ogunshina Opeyemi Alabi", department: "Computer Science", photo: "/academic-director-2.jpeg" } },
   { id: "ldr-10", name: "Akinsola Helen Olajumoke", role: "Welfare Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/welfare-director.jpeg", assistant: { name: "Taofeek Faiqah Moradeyo", department: "Computer Science", photo: "/welfare-director-2.jpeg" } },
   { id: "ldr-11", name: "Oyegoke Ayanfeoluwa (20.10)", role: "Social Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80", assistant: { name: "Oyekunle Oluwadamilre", department: "Computer Science", photo: "/social-director-2.jpeg" } },
   { id: "ldr-12", name: "Ayomide Balogun", role: "Sport Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_DSC_ID, photo: "/sport-director.jpeg", assistant: { name: "Adeleke Muiz", department: "Computer Science", photo: "/sport-director-2.jpeg" } },
   { id: "ldr-13", name: "Rabiu Adam Akorede", role: "Software Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/software-director.jpeg", assistant: { name: "Musari Oluwasegun Peter", department: "Software Engineering", photo: "/software-director-2.jpeg" } },
-  { id: "ldr-3", name: "Chinedu Okeke", role: "Speaker", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_SWE_ID, photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80" },
+  { id: "ldr-3", name: "Rt. Hon. Adeseyitan Emmanuel Ilerioluwa", role: "Speaker", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_SWE_ID, photo: "/faculty-speaker.jpeg" },
+  { id: "ldr-20", name: "Ige Timileyin Oladimeji", role: "Deputy Speaker", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/deputy-speaker.jpeg" },
   { id: "ldr-4", name: "Aisha Musa", role: "Clerk", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_INS_ID, photo: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80" },
   { id: "ldr-5", name: "Emeka John", role: "President", branch: "executive", academicSession: "2025/2026", departmentId: DEPT_SWE_ID, photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" },
-  { id: "ldr-14", name: "Hannah Oluwasunmisola Fadebi", role: "Honorable Member", branch: "legislative", academicSession: "2024/2025", departmentId: DEPT_LIS_ID, photo: "/lis-bgs.jpeg" }
+  { id: "ldr-14", name: "Hannah Oluwasunmisola Fadebi", role: "Honorable Member", branch: "legislative", academicSession: "2024/2025", departmentId: DEPT_LIS_ID, photo: "/lis-bgs.jpeg" },
+  { id: "ldr-15", name: "Osuntasa Oluwashinaayomi Simon", role: "Chief Whip", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/chip-whip-csc.jpeg" },
+  { id: "ldr-16", name: "Lukman Umar Olatunde (Ayoola)", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_INT_ID, photo: "/member-ift.jpeg" },
+  { id: "ldr-17", name: "Akinboyewa Ayomide Emmanuel", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_INS_ID, photo: "/member-ins.jpeg" },
+  { id: "ldr-18", name: "Oladejo Ayomide Elijah", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/member-sen.jpeg" }
 ];
 
 export const MOCK_ROLL_OF_HONOUR = [
