@@ -80,16 +80,13 @@ export const NAV_LINKS = [
     ]
   },
   {
-    label: "News & Events",
-    path: "/news",
-  },
-  {
-    label: "Student Union",
-    path: "/focitsa",
-  },
-  {
-    label: "Student Affairs",
-    path: "/student-affairs",
+    label: "Student Life",
+    path: "#",
+    children: [
+      { label: "News & Events", path: "/news" },
+      { label: "Student Union (FOCITSA)", path: "/focitsa" },
+      { label: "Student Affairs", path: "/student-affairs" },
+    ]
   },
   {
     label: "Alumni",

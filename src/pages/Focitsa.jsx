@@ -1,5 +1,5 @@
-import { useLoaderData, useSearchParams, useNavigation } from "react-router-dom";
-import { Users, BookOpen, CheckCircle2, LifeBuoy, FileText, Loader2 } from "lucide-react";
+import { useLoaderData, useSearchParams, useNavigation, Link } from "react-router-dom";
+import { Users, BookOpen, CheckCircle2, LifeBuoy, FileText, Loader2, ChevronRight } from "lucide-react";
 import { getStudentLeaders, getRollOfHonour, CURRENT_SESSION } from "../services/api";
 import { ProfileCard } from "../components/ui/ProfileCard";
 import staticContent from "../data/staticContent.json";
@@ -75,33 +75,42 @@ export default function Focitsa() {
     <div className="min-h-screen bg-slate-50 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
+        {/* Breadcrumb Navigation */}
+        <nav aria-label="Breadcrumb" className="mb-10">
+          <ol className="flex items-center gap-2 text-sm text-slate-500">
+            <li><Link to="/" className="hover:text-indigo-600 transition-colors">Home</Link></li>
+            <li><ChevronRight size={14} className="text-slate-300" /></li>
+            <li aria-current="page" className="text-slate-900 font-semibold">Student Union</li>
+          </ol>
+        </nav>
+
         <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center p-3 bg-indigo-100 rounded-full mb-4">
-            <Users className="h-8 w-8 text-indigo-600" />
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full overflow-hidden mb-6 border-2 border-indigo-100 shadow-sm bg-white">
+            <img src="/faculty-logo.jpg" alt="FOCITSA Crest" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight sm:text-5xl mb-4">
             FOCITSA Student Union
           </h1>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-8">
-            The Faculty of Computing and Information Technology Student Association representing the interests, welfare, and academic progress of all students.
+            The Faculty of Computing and Information Technology Student Association — representing the interests, welfare, and academic progress of all students.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
             <a 
               href="#executives" 
-              onClick={() => handleCtaClick('contact_welfare_support')}
+              onClick={() => handleCtaClick('meet_leaders')}
               className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-full sm:w-auto transition-colors shadow-sm"
             >
-              <LifeBuoy className="w-5 h-5 mr-2" />
-              Welfare & Support
+              <Users className="w-5 h-5 mr-2" />
+              Meet Your Leaders
             </a>
             <a 
-              href="#constitution" 
-              onClick={() => handleCtaClick('view_constitution')}
+              href="#executives" 
+              onClick={() => handleCtaClick('contact_welfare_support')}
               className="inline-flex items-center justify-center px-6 py-3 border border-slate-300 text-base font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-full sm:w-auto transition-colors shadow-sm"
             >
-              <FileText className="w-5 h-5 mr-2 text-slate-400" />
-              Union Constitution
+              <LifeBuoy className="w-5 h-5 mr-2 text-slate-400" />
+              Welfare & Support
             </a>
           </div>
         </div>
@@ -172,7 +181,7 @@ export default function Focitsa() {
 
                   return (
                     <div key={leader.id} className={`w-[85vw] sm:w-auto flex-shrink-0 snap-center sm:snap-align-none ${variant === "president" ? "sm:col-span-2 lg:col-span-3 xl:col-span-4 sm:flex sm:justify-center sm:mb-4" : ""}`}>
-                      <div className={`${variant === "president" ? "w-full sm:max-w-sm" : "w-full"}`}>
+                      <div className={`flex flex-col justify-start gap-4 h-full ${variant === "president" ? "w-full sm:max-w-sm" : "w-full"}`}>
                         <ProfileCard 
                           name={leader.name}
                           subtitle={leader.role}
@@ -180,9 +189,19 @@ export default function Focitsa() {
                           imagePosition="object-cover object-top"
                           badge={leader.department}
                           variant={variant}
-                          assistant={leader.assistant}
                           initials={leader.initials}
                         />
+                        {leader.assistant && (
+                          <ProfileCard 
+                            name={leader.assistant.name}
+                            subtitle={`Assistant ${leader.role}`}
+                            image={leader.assistant.photo}
+                            imagePosition="object-cover object-top"
+                            badge={leader.assistant.department || leader.department}
+                            initials={leader.assistant.initials}
+                            isAssistant={true}
+                          />
+                        )}
                       </div>
                     </div>
                   );

@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { ChevronDown, User } from "lucide-react";
+import { User } from "lucide-react";
 
-export function ProfileCard({ name, subtitle, image, imagePosition = "object-cover object-top", badge, children, variant = "default", assistant, initials = "" }) {
+export function ProfileCard({ name, subtitle, image, imageSrcSet, imageSizes = "(max-width: 639px) 85vw, (max-width: 1023px) 45vw, (max-width: 1279px) 30vw, 24vw", imagePosition = "object-cover object-top", badge, children, variant = "default", isAssistant, initials = "", lazy = true }) {
   const [imgStatus, setImgStatus] = useState("loading"); // loading, loaded, error
-  const [isAssistantExpanded, setIsAssistantExpanded] = useState(false);
 
   let frameClasses = "bg-white rounded-xl overflow-hidden flex flex-col transition-all duration-300 w-full ";
   
@@ -15,6 +14,8 @@ export function ProfileCard({ name, subtitle, image, imagePosition = "object-cov
     frameClasses += "dean-frame shadow-xl transform hover:-translate-y-1 relative z-10";
   } else if (variant === "student-frame") {
     frameClasses += "student-frame shadow-xl transform hover:-translate-y-1 relative z-10";
+  } else if (isAssistant) {
+    frameClasses += "border border-slate-200 shadow-sm hover:shadow-md relative bg-slate-50 opacity-90 hover:opacity-100";
   } else {
     frameClasses += "border border-slate-200 shadow-sm hover:shadow-md relative";
   }
@@ -25,7 +26,11 @@ export function ProfileCard({ name, subtitle, image, imagePosition = "object-cov
         {imgStatus !== 'error' && (
           <img 
             src={image || "invalid-trigger-error"} 
+            srcSet={imageSrcSet}
+            sizes={imageSrcSet ? imageSizes : undefined}
             alt={`Profile of ${name}`} 
+            loading={lazy ? "lazy" : "eager"}
+            decoding="async"
             onLoad={() => setImgStatus("loaded")}
             onError={() => setImgStatus("error")}
             className={`absolute inset-0 w-full h-full ${imagePosition} ${imgStatus === 'loaded' ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
@@ -56,49 +61,6 @@ export function ProfileCard({ name, subtitle, image, imagePosition = "object-cov
           </span>
         </div>
 
-        {assistant && (
-          <div className="mt-4 pt-3 border-t border-slate-100">
-            <button
-              onClick={() => setIsAssistantExpanded(!isAssistantExpanded)}
-              aria-expanded={isAssistantExpanded}
-              aria-controls={`assistant-${name.replace(/\s+/g, '-')}`}
-              className="flex items-center justify-between w-full text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded px-1 -mx-1 py-1"
-            >
-              <span>View Assistant</span>
-              <ChevronDown className={`w-4 h-4 transition-transform duration-300 ease-in-out ${isAssistantExpanded ? 'rotate-180 text-indigo-600' : 'text-slate-400'}`} />
-            </button>
-            
-            <div 
-              id={`assistant-${name.replace(/\s+/g, '-')}`}
-              className={`grid transition-all duration-300 ease-in-out ${isAssistantExpanded ? 'grid-rows-[1fr] opacity-100 mt-3 visible' : 'grid-rows-[0fr] opacity-0 mt-0 invisible'}`}
-              aria-hidden={!isAssistantExpanded}
-              inert={!isAssistantExpanded ? "" : undefined}
-            >
-              <div className="overflow-hidden">
-                <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
-                  <div className="w-10 h-10 rounded-full bg-slate-200 flex-shrink-0 flex items-center justify-center overflow-hidden border border-slate-300">
-                     {assistant.photo ? (
-                        <img 
-                          src={assistant.photo} 
-                          alt={assistant.name} 
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                            e.target.nextSibling.style.display = 'flex';
-                          }}
-                        />
-                     ) : null}
-                     <span className="text-xs font-bold text-slate-500" style={{display: assistant.photo ? 'none' : 'flex'}}>{assistant.initials}</span>
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-bold text-slate-900 truncate">{assistant.name}</p>
-                    <p className="text-xs text-slate-500 truncate">{assistant.role || 'Assistant'}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

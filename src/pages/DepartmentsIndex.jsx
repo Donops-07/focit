@@ -35,7 +35,10 @@ export default function DepartmentsIndex() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {departments.map((dept) => (
-            <div key={dept.id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+            <div 
+              key={dept.id} 
+              className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col hover:shadow-md transition-shadow md:last:odd:col-span-2 md:last:odd:items-center lg:last:odd:col-span-1 lg:last:odd:items-stretch md:last:odd:text-center lg:last:odd:text-left"
+            >
               <div className={`h-2 bg-${dept.color}-500 w-full`}></div>
               <div className="p-6 flex flex-col flex-grow">
                 <h3 className="text-2xl font-bold text-slate-900 mb-2">{dept.name}</h3>

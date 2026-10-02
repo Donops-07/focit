@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   Menu,
@@ -22,6 +22,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isNavHovered, setIsNavHovered] = useState(false);
   const dropdownRef = useRef(null);
+  const drawerCloseRef = useRef(null);
   const location = useLocation();
 
   // Close mobile nav and dropdowns on route change
@@ -64,6 +65,44 @@ export default function Navbar() {
     return () => {
       document.body.style.overflow = "";
     };
+  }, [isMobileOpen]);
+
+  // Focus trap: set inert on background content and auto-focus close button
+  useEffect(() => {
+    if (isMobileOpen) {
+      // Auto-focus the close button when drawer opens
+      requestAnimationFrame(() => {
+        drawerCloseRef.current?.focus();
+      });
+
+      // Mark all sibling content as inert so keyboard/AT cannot escape
+      const header = document.querySelector('.site-header');
+      const siblings = header?.parentElement?.children;
+      if (siblings) {
+        Array.from(siblings).forEach(el => {
+          if (el !== header) el.setAttribute('inert', '');
+        });
+      }
+      return () => {
+        if (siblings) {
+          Array.from(siblings).forEach(el => {
+            if (el !== header) el.removeAttribute('inert');
+          });
+        }
+      };
+    }
+  }, [isMobileOpen]);
+
+  // Escape key closes mobile drawer
+  useEffect(() => {
+    if (!isMobileOpen) return;
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        setIsMobileOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
   }, [isMobileOpen]);
 
   const toggleDropdown = (label) => {
@@ -124,7 +163,7 @@ export default function Navbar() {
 
           {/* Desktop Nav Links */}
           <ul className="hidden lg:flex items-center gap-1 h-full">
-            {NAV_LINKS.slice(0, 5).map((item) => (
+            {NAV_LINKS.map((item) => (
               <li
                 key={item.label}
                 className={cn(
@@ -204,54 +243,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Expanded Navigation Drawer for remaining items (Desktop) */}
-        <div 
-          className={cn(
-            "hidden lg:block absolute left-0 w-full transition-all duration-300 z-[90]",
-            isNavHovered ? "max-h-[300px] opacity-100 border-b shadow-md py-6" : "max-h-0 opacity-0 border-transparent py-0 overflow-hidden pointer-events-none"
-          )}
-          style={{ 
-            top: "100%", 
-            backgroundColor: "var(--color-surface)", 
-            borderColor: "var(--color-border)"
-          }}
-        >
-          <div className="max-w-[1280px] mx-auto px-6">
-            <div className="flex flex-wrap gap-8 items-start justify-center">
-              {NAV_LINKS.slice(5).map((item) => (
-                <div key={item.label} className="flex flex-col min-w-[150px]">
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive }) =>
-                      cn(
-                        "font-medium text-[0.95rem] pb-2 border-b-2 transition-all w-fit",
-                        isActive 
-                          ? "text-[var(--color-blue-primary)] border-[var(--color-blue-primary)] font-semibold" 
-                          : "text-[var(--color-text-secondary)] border-transparent hover:text-[var(--color-blue-primary)] hover:border-[var(--color-blue-lightest)]"
-                      )
-                    }
-                  >
-                    {item.label}
-                  </NavLink>
-                  {item.children && (
-                    <ul className="mt-3 flex flex-col gap-2">
-                      {item.children.map((child) => (
-                        <li key={child.path}>
-                          <NavLink
-                            to={child.path}
-                            className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-blue-primary)] transition-colors"
-                          >
-                            {child.label}
-                          </NavLink>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+
       </nav>
 
       {/* Mobile Drawer Overlay */}
@@ -265,6 +257,8 @@ export default function Navbar() {
       <aside
         className={cn("mobile-drawer", isMobileOpen && "mobile-drawer--open")}
         aria-label="Mobile navigation"
+        role="dialog"
+        aria-modal="true"
       >
         <div className="mobile-drawer__header">
           <Link
@@ -281,6 +275,7 @@ export default function Navbar() {
             </div>
           </Link>
           <button
+            ref={drawerCloseRef}
             className="mobile-toggle"
             onClick={() => setIsMobileOpen(false)}
             aria-label="Close menu"

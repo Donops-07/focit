@@ -12,13 +12,13 @@ export const DEPT_LIS_ID = "uuid-dept-lis";
 // --- MOCK DATA ---
 
 export const DEPARTMENTS = [
-  { id: DEPT_CS_ID, name: "Computer Science", shortName: "CSC", slug: "computer-science", icon: "Monitor", color: "blue" },
-  { id: DEPT_CYB_ID, name: "Cyber Security", shortName: "CYB", slug: "cyber-security", icon: "ShieldAlert", color: "red" },
-  { id: DEPT_SWE_ID, name: "Software Engineering", shortName: "SWE", slug: "software-engineering", icon: "Code", color: "purple" },
-  { id: DEPT_INS_ID, name: "Information Systems", shortName: "INS", slug: "information-systems", icon: "Database", color: "amber" },
-  { id: DEPT_INT_ID, name: "Information Technology", shortName: "IFT", slug: "information-technology", icon: "Network", color: "teal" },
-  { id: DEPT_DSC_ID, name: "Data Science", shortName: "DSC", slug: "data-science", icon: "LineChart", color: "indigo" },
-  { id: DEPT_LIS_ID, name: "Library & Information Science", shortName: "LIS", slug: "library-and-information-science", icon: "BookOpen", color: "orange" }
+  { id: DEPT_CS_ID, name: "Computer Science", shortName: "CSC", slug: "computer-science", icon: "Monitor", color: "blue", studentCount: 320, description: "Students learn how computers work from the ground up — from writing instructions that make software run, to understanding how systems store, sort, and process information. Graduates go on to work as software developers, tech consultants, and researchers." },
+  { id: DEPT_CYB_ID, name: "Cyber Security", shortName: "CYB", slug: "cyber-security", icon: "ShieldAlert", color: "red", studentCount: 215, description: "This department trains students to protect computers, networks, and sensitive data from hackers and online threats. Graduates are in high demand at banks, government agencies, and tech companies as security analysts and digital forensics specialists." },
+  { id: DEPT_SWE_ID, name: "Software Engineering", shortName: "SWE", slug: "software-engineering", icon: "Code", color: "purple", studentCount: 280, description: "Students learn to plan, build, and maintain the apps and systems people use every day — from mobile apps to banking platforms. The focus is on teamwork, project management, and building software that is reliable and easy to use." },
+  { id: DEPT_INS_ID, name: "Information Systems", shortName: "INS", slug: "information-systems", icon: "Database", color: "amber", studentCount: 190, description: "This department teaches students how businesses use technology to run their daily operations — from managing records and customer data to making better decisions with digital tools. Graduates often work as IT managers, business analysts, and system administrators." },
+  { id: DEPT_INT_ID, name: "Information Technology", shortName: "IFT", slug: "information-technology", icon: "Network", color: "teal", studentCount: 240, description: "Focused on the practical side of technology — setting up computer networks, managing servers, and keeping an organisation's tech running smoothly. Graduates work as network engineers, IT support specialists, and cloud administrators." },
+  { id: DEPT_DSC_ID, name: "Data Science", shortName: "DSC", slug: "data-science", icon: "LineChart", color: "indigo", studentCount: 160, description: "Students learn how to collect, organise, and make sense of large amounts of data to help organisations spot trends and make smarter decisions. Think of it as turning raw numbers into useful knowledge. Graduates work as data analysts, research scientists, and AI specialists." },
+  { id: DEPT_LIS_ID, name: "Library & Information Science", shortName: "LIS", slug: "library-and-information-science", icon: "BookOpen", color: "orange", studentCount: 120, description: "This department trains students in organising, storing, and sharing knowledge — both in traditional libraries and modern digital archives. Graduates work as librarians, records managers, knowledge officers, and digital archivists." }
 ];
 
 export const MOCK_LABS = [
@@ -180,7 +180,7 @@ export const MOCK_STUDENT_LEADERS = [
   { id: "ldr-13", name: "Rabiu Adam Akorede", role: "Software Director", branch: "executive", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/software-director.jpeg", assistant: { name: "Musari Oluwasegun Peter", department: "Software Engineering", photo: "/software-director-2.jpeg" } },
   { id: "ldr-3", name: "Rt. Hon. Adeseyitan Emmanuel Ilerioluwa", role: "Speaker", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_SWE_ID, photo: "/faculty-speaker.jpeg" },
   { id: "ldr-20", name: "Ige Timileyin Oladimeji", role: "Deputy Speaker", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/deputy-speaker.jpeg" },
-  { id: "ldr-4", name: "Aisha Musa", role: "Clerk", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_INS_ID, photo: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80" },
+  // { id: "ldr-4", name: "Aisha Musa", role: "Clerk", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_INS_ID, photo: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80" },
   { id: "ldr-5", name: "Emeka John", role: "President", branch: "executive", academicSession: "2025/2026", departmentId: DEPT_SWE_ID, photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" },
   { id: "ldr-14", name: "Hannah Oluwasunmisola Fadebi", role: "Honorable Member", branch: "legislative", academicSession: "2024/2025", departmentId: DEPT_LIS_ID, photo: "/lis-bgs.jpeg" },
   { id: "ldr-15", name: "Osuntasa Oluwashinaayomi Simon", role: "Chief Whip", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_CS_ID, photo: "/chip-whip-csc.jpeg" },

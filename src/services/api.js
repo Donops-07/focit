@@ -20,8 +20,7 @@ export async function getAllDepartments(options = {}) {
   const m = await getMocks();
   return m.DEPARTMENTS.map(dept => ({
     ...dept,
-    description: `The Department of ${dept.name} offers cutting-edge programmes in ${dept.name.toLowerCase()}.`,
-    studentCount: Math.floor(Math.random() * 300) + 100,
+    studentCount: dept.studentCount || 0,
   }));
 }
 
@@ -40,10 +39,21 @@ export async function getDepartmentBasic(slug, options = {}) {
 
   const staffCount = m.STAFF_DIRECTORY.filter((s) => s.department_id === department.id).length;
 
+  // Per-department vision statements in plain, parent-friendly language
+  const visionMap = {
+    'computer-science': 'We aim to raise graduates who truly understand how computers work and can build the technology that shapes the future — whether that means creating new software, solving complex problems, or leading research teams.',
+    'cyber-security': 'Our goal is to produce graduates who can keep people, businesses, and governments safe online — professionals trusted to protect sensitive information in an increasingly digital world.',
+    'software-engineering': 'We train students to become the people who design and build the apps, websites, and systems that millions of people rely on every day — with a focus on quality, teamwork, and real-world skills.',
+    'information-systems': 'We prepare students to be the bridge between technology and business — the people who help companies use digital tools to work smarter, serve customers better, and grow.',
+    'information-technology': 'Our vision is to produce hands-on technology professionals who can set up, manage, and troubleshoot the computer systems and networks that keep modern organisations running.',
+    'data-science': 'We are building a new generation of professionals who can look at large amounts of data and find the useful patterns hidden inside — helping hospitals, banks, farms, and governments make better decisions.',
+    'library-and-information-science': 'We aim to train professionals who preserve and organise knowledge for future generations — whether in a physical library, a digital archive, or a corporate records system.',
+  };
+
   return {
     ...department,
-    description: `The Department of ${department.name} at UNIOSUN offers cutting-edge programmes designed to produce industry-ready graduates.`,
-    vision: `To be a world-class department in ${department.name} education, research, and innovation.`,
+    description: department.description,
+    vision: visionMap[slug] || `We are committed to providing a high-quality education in ${department.name} that prepares students for rewarding careers.`,
     programmes: [`B.Sc. ${department.name}`, `M.Sc. ${department.name}`, `Ph.D. ${department.name}`],
     staffCount: staffCount,
   };
