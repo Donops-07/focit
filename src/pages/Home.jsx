@@ -244,7 +244,7 @@ export default function Home() {
             <p className="text-slate-500 mt-2">Explore our core facilities and academic networks.</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[250px]">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:auto-rows-[250px]">
             {/* Main Bento Card */}
             <div className="group md:col-span-2 md:row-span-2 flex flex-col p-8 bg-white rounded-3xl border border-slate-200 hover:border-indigo-400/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-indigo-500/10 transition-all duration-300 relative overflow-hidden">
               <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity transform group-hover:scale-110 duration-500">

@@ -120,8 +120,8 @@ export default function AlumniPortal() {
         <div className="flex flex-col items-center text-center mb-16">
           <div className="relative w-full max-w-4xl h-64 sm:h-80 md:h-96 mb-8 rounded-2xl overflow-hidden shadow-lg">
             <img 
-              src="https://images.unsplash.com/photo-1523580494112-071dcb849aa8?q=80&w=1200&auto=format&fit=crop" 
-              alt="Graduating Students" 
+              src="/focit-main-building.png" 
+              alt="Faculty of Computing & Information Technology Main Building" 
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-slate-900/40"></div>
@@ -201,6 +201,10 @@ export default function AlumniPortal() {
                     <option value="computer-science">Computer Science</option>
                     <option value="cyber-security">Cyber Security</option>
                     <option value="software-engineering">Software Engineering</option>
+                    <option value="information-systems">Information Systems</option>
+                    <option value="information-technology">Information Technology</option>
+                    <option value="data-science">Data Science</option>
+                    <option value="library-and-information-science">Library and Information Science</option>
                   </select>
                   {regErrors.department && <p className="mt-1 text-sm text-red-600">{regErrors.department.message}</p>}
                 </div>
