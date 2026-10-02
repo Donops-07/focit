@@ -47,7 +47,7 @@ export function ProfileCard({ name, subtitle, image, imageSrcSet, imageSizes = "
 
       <div className="p-5 sm:p-6 flex-grow flex flex-col bg-white">
         <h3 className="text-xl font-bold text-slate-900 mb-1 leading-tight">{name}</h3>
-        <p className="text-indigo-600 font-medium text-sm mb-3">{subtitle}</p>
+        <p className="text-slate-600 font-medium text-sm mb-3">{subtitle}</p>
         
         {children && (
           <div className="mb-4">
