@@ -191,7 +191,8 @@ export const MOCK_STUDENT_LEADERS = [
   { id: "ldr-21", name: "Opabiyi Philip Adedotun(Philip Smart)", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_CYB_ID, photo: "/member-cyb.jpeg" },
   { id: "ldr-22", name: "Owolabi Bashit Ayomide", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_DSC_ID, photo: "/member-data-science.jpeg" },
   { id: "ldr-23", name: "Bamgbose Olumide Chidiebere", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_DSC_ID, photo: "/member-data-science-2.jpeg" },
-  { id: "ldr-24", name: "Oni Emmanuel Kayode", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_INT_ID, photo: "/member-ift-2.jpeg" }
+  { id: "ldr-24", name: "Oni Emmanuel Kayode", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_INT_ID, photo: "/member-ift-2.jpeg" },
+  { id: "ldr-25", name: "Lawal Ifeoluwa Ibrahim", role: "Honorable Member", branch: "legislative", academicSession: "2026/2027", departmentId: DEPT_LIS_ID, photo: "/member-lis.jpeg" }
 ];
 
 export const MOCK_ROLL_OF_HONOUR = [
